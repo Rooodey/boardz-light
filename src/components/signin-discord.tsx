@@ -1,15 +1,12 @@
-import { Button } from "~/components/ui/button";
-import { signIn } from "~/server/auth/auth";
+"use client";
 
-export function SignInDiscord() {
+import { Button } from "~/components/ui/button";
+import { signIn } from "next-auth/react";
+
+export default function SignInDiscord() {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("discord");
-      }}
-    >
-      <Button type="submit">Continue to Discord</Button>
-    </form>
+    <Button onClick={() => signIn("discord", { callbackUrl: "/" })}>
+      Continue to Discord
+    </Button>
   );
 }

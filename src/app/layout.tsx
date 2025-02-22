@@ -4,6 +4,9 @@ import { SessionProvider } from "next-auth/react";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import TopNav from "~/components/topnav";
+import { auth } from "~/server/auth/auth";
+import LoggedInLayout from "~/components/logged-in-layout";
+import LoggedOutLayout from "~/components/logged-out-layout";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -11,15 +14,19 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth();
   return (
     <SessionProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
-        <body>
-          <TopNav />
-          {children}
+        <body className="flex min-h-screen flex-col">
+          {session ? (
+            <LoggedInLayout>{children}</LoggedInLayout>
+          ) : (
+            <LoggedOutLayout>{children}</LoggedOutLayout>
+          )}
         </body>
       </html>
     </SessionProvider>

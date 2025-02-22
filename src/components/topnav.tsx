@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
-export default function Navbar() {
+export default function TopNav() {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
