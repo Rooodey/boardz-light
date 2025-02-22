@@ -46,10 +46,10 @@ export default function Navbar() {
                     {session.user?.name}
                     <Avatar className="cursor-pointer">
                       <AvatarImage
-                        src={session.user?.image || "/default-avatar.png"}
+                        src={session.user?.image ?? "/default-avatar.png"}
                       />
                       <AvatarFallback>
-                        {session.user?.name?.charAt(0) || "U"}
+                        {session.user?.name?.charAt(0) ?? "U"}
                       </AvatarFallback>
                     </Avatar>
                   </div>
