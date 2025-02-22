@@ -1,7 +1,9 @@
 import "~/styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import TopNav from "~/components/topnav";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -13,8 +15,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
-    </html>
+    <SessionProvider>
+      <html lang="en" className={`${GeistSans.variable}`}>
+        <body>
+          <TopNav />
+          {children}
+        </body>
+      </html>
+    </SessionProvider>
   );
 }
