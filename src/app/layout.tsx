@@ -3,10 +3,9 @@ import { SessionProvider } from "next-auth/react";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import TopNav from "~/components/topnav";
 import { auth } from "~/server/auth/auth";
-import LoggedInLayout from "~/components/logged-in-layout";
-import LoggedOutLayout from "~/components/logged-out-layout";
+import AppNavbar from "~/components/app-navbar";
+import TopNav from "~/components/topnav";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -30,5 +29,23 @@ export default async function RootLayout({
         </body>
       </html>
     </SessionProvider>
+  );
+}
+
+function LoggedOutLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <TopNav />
+      <main className="flex flex-grow">{children}</main>
+    </>
+  );
+}
+
+function LoggedInLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <AppNavbar />
+      <main className="flex flex-grow md:ml-64">{children}</main>
+    </>
   );
 }

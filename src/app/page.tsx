@@ -12,16 +12,16 @@ export default async function HomePage() {
 
 function LoggedInHome() {
   return (
-    <main className="flex flex-grow items-center justify-center p-6 md:ml-64">
+    <div className="flex flex-grow items-center justify-center p-6">
       Welcome back! 🎉 Check out your feed.
-    </main>
+    </div>
   );
 }
 
 function LoggedOutHome() {
   return (
-    <main className="flex flex-grow items-center justify-center p-6">
+    <div className="flex flex-grow items-center justify-center p-6">
       👋 Welcome! Sign up to get started.
-    </main>
+    </div>
   );
 }
