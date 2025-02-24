@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Home, Search, PlusCircle, UsersRound } from "lucide-react"; // Icons
+import { Home, Search, PlusCircle, UsersRound, LogOut } from "lucide-react"; // Icons
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import type { DefaultSession } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -15,29 +15,39 @@ export default function AppNavbar() {
       {/* Desktop Sidebar (sichtbar ab md:) */}
       <nav className="fixed left-0 top-0 hidden h-full w-64 flex-col items-start border-r bg-white p-6 shadow-md md:flex">
         <h1 className="mb-6 text-xl">BOARDZ</h1>
-        <div className="flex flex-col space-y-4">
-          <SidebarItem href="/" icon={<Home size={24} />} label="Home" />
-          <SidebarItem
-            href="/search"
-            icon={<Search size={24} />}
-            label="Search"
-          />
-          <SidebarItem
-            href="/events"
-            icon={<PlusCircle size={24} />}
-            label="Events"
-          />
-          <SidebarItem
-            href="/groups"
-            icon={<UsersRound size={24} />}
-            label="Groups"
-          />
-          <SidebarItem
-            href="/profile"
-            icon={<AvatarIcon session={session} />}
-            label="Profile"
-          />
-          <button onClick={() => signOut()}>Sign Out</button>
+        <div className="flex h-full flex-col justify-between">
+          <div className="flex flex-col space-y-4">
+            <SidebarItem href="/" icon={<Home size={24} />} label="Home" />
+            <SidebarItem
+              href="/search"
+              icon={<Search size={24} />}
+              label="Search"
+            />
+            <SidebarItem
+              href="/events"
+              icon={<PlusCircle size={24} />}
+              label="Events"
+            />
+            <SidebarItem
+              href="/groups"
+              icon={<UsersRound size={24} />}
+              label="Groups"
+            />
+            <SidebarItem
+              href="/profile"
+              icon={<AvatarIcon session={session} />}
+              label="Profile"
+            />
+          </div>
+          <div>
+            <button
+              className="flex items-center space-x-3 text-gray-700 hover:text-black"
+              onClick={() => signOut()}
+            >
+              <LogOut size={24} />
+              <span className="text-lg">Sign Out</span>
+            </button>
+          </div>
         </div>
       </nav>
 

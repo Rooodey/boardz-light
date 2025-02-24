@@ -18,7 +18,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const session = await auth();
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body className="flex min-h-screen flex-col">
           {session ? (

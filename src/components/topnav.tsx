@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react"; // Icons für das Menü
+import { Menu, X } from "lucide-react";
 
 export default function TopNav() {
   const [isOpen, setIsOpen] = useState(false);

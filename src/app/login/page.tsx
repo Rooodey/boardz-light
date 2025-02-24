@@ -1,5 +1,4 @@
 import { LoginForm } from "~/components/login-form";
-import SignInDiscord from "~/components/signin-button";
 
 export default async function Page() {
   return (
