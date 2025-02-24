@@ -52,20 +52,13 @@ export default function AppNavbar() {
       </nav>
 
       {/* Mobile Bottom Navbar (sichtbar bis md:) */}
-      <nav className="fixed bottom-0 left-0 w-full border-t bg-white shadow-md md:hidden">
+      <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-white shadow-md md:hidden">
         <div className="flex justify-around py-3">
           <NavItem href="/" icon={<Home size={28} />} />
           <NavItem href="/search" icon={<Search size={28} />} />
           <NavItem href="/events" icon={<PlusCircle size={28} />} />
           <NavItem href="/groups" icon={<UsersRound size={28} />} />
-          <Link href="/profile">
-            <Avatar className="h-8 w-8">
-              <AvatarImage
-                src={session?.user?.image ?? "/default-avatar.png"}
-              />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-          </Link>
+          <NavItem href="/profile" icon={<AvatarIcon session={session} />} />
         </div>
       </nav>
     </>
