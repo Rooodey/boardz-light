@@ -2,20 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
 import { Menu, X } from "lucide-react"; // Icons für das Menü
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 
 export default function TopNav() {
-  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -28,54 +17,15 @@ export default function TopNav() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-6 md:flex">
-          <Link href="/about" className="hover:text-gray-400">
-            About
+          <Link href="/events" className="hover:text-gray-400">
+            Events
           </Link>
-          {session && (
-            <Link href="/dashboard" className="hover:text-gray-400">
-              Dashboard
-            </Link>
-          )}
-
-          {/* Auth Section */}
-          <div className="flex items-center justify-center space-x-4">
-            {session ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <div className="flex flex-row items-center gap-2">
-                    {session.user?.name}
-                    <Avatar className="cursor-pointer">
-                      <AvatarImage
-                        src={session.user?.image ?? "/default-avatar.png"}
-                      />
-                      <AvatarFallback>
-                        {session.user?.name?.charAt(0) ?? "U"}
-                      </AvatarFallback>
-                    </Avatar>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>
-                    {session.user?.name ?? "User"}
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link href="/profile">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => signOut()}>
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link
-                href="/login"
-                className="rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700"
-              >
-                Login
-              </Link>
-            )}
-          </div>
+          <Link
+            href="/login"
+            className="rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700"
+          >
+            Login
+          </Link>
         </div>
 
         {/* Mobile Navigation Button */}
@@ -90,14 +40,15 @@ export default function TopNav() {
           <Link href="/" className="block hover:text-gray-400">
             Home
           </Link>
-          <Link href="/about" className="block hover:text-gray-400">
-            About
+          <Link href="/events" className="block hover:text-gray-400">
+            Events
           </Link>
-          {session && (
-            <Link href="/dashboard" className="block hover:text-gray-400">
-              Dashboard
-            </Link>
-          )}
+          <Link
+            href="/login"
+            className="block rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700"
+          >
+            Login
+          </Link>
         </div>
       )}
     </nav>

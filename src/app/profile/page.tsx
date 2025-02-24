@@ -1,7 +1,7 @@
-export default async function HomePage() {
+export default async function Page() {
   return (
-    <main className="flex flex-grow flex-col items-center justify-center md:ml-64">
+    <div className="flex flex-grow flex-col items-center justify-center">
       profile
-    </main>
+    </div>
   );
 }

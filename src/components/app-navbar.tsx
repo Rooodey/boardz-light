@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Home, Search, PlusCircle, Video } from "lucide-react"; // Icons
+import { Home, Search, PlusCircle, UsersRound } from "lucide-react"; // Icons
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import type { DefaultSession } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -23,11 +23,15 @@ export default function AppNavbar() {
             label="Search"
           />
           <SidebarItem
-            href="/create"
+            href="/events"
             icon={<PlusCircle size={24} />}
-            label="Create"
+            label="Events"
           />
-          <SidebarItem href="/reels" icon={<Video size={24} />} label="Reels" />
+          <SidebarItem
+            href="/groups"
+            icon={<UsersRound size={24} />}
+            label="Groups"
+          />
           <SidebarItem
             href="/profile"
             icon={<AvatarIcon session={session} />}
@@ -42,8 +46,8 @@ export default function AppNavbar() {
         <div className="flex justify-around py-3">
           <NavItem href="/" icon={<Home size={28} />} />
           <NavItem href="/search" icon={<Search size={28} />} />
-          <NavItem href="/create" icon={<PlusCircle size={28} />} />
-          <NavItem href="/reels" icon={<Video size={28} />} />
+          <NavItem href="/events" icon={<PlusCircle size={28} />} />
+          <NavItem href="/groups" icon={<UsersRound size={28} />} />
           <Link href="/profile">
             <Avatar className="h-8 w-8">
               <AvatarImage
