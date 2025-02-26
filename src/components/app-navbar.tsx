@@ -14,7 +14,7 @@ export default function AppNavbar() {
     <>
       {/* Desktop Sidebar (sichtbar ab md:) */}
       <nav className="fixed left-0 top-0 hidden h-full w-64 flex-col items-start border-r p-6 shadow-md md:flex">
-        <h1 className="mb-6 text-xl">BOARDZ</h1>
+        <h1 className="mb-6 text-xl text-primary">BOARDZ</h1>
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col space-y-4">
             <SidebarItem href="/" icon={<Home size={24} />} label="Home" />
@@ -41,7 +41,7 @@ export default function AppNavbar() {
           </div>
           <div>
             <button
-              className="flex items-center space-x-3 text-gray-500 hover:text-black"
+              className="flex items-center space-x-3 hover:text-foreground/70"
               onClick={() => signOut()}
             >
               <LogOut size={24} />
@@ -71,7 +71,7 @@ export default function AppNavbar() {
 /* Komponenten für Navbar-Items */
 function NavItem({ href, icon }: { href: string; icon: React.ReactNode }) {
   return (
-    <Link href={href} className="text-gray-500 hover:text-black">
+    <Link href={href} className="hover:text-accent">
       {icon}
     </Link>
   );
@@ -89,7 +89,7 @@ function SidebarItem({
   return (
     <Link
       href={href}
-      className="flex items-center space-x-3 text-gray-500 hover:text-black"
+      className="flex items-center space-x-3 hover:text-foreground/70"
     >
       {icon}
       <span className="text-lg">{label}</span>

@@ -1,11 +1,18 @@
 import "~/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 
-import { GeistSans } from "geist/font/sans";
+import { Nunito_Sans } from "next/font/google";
 import { type Metadata } from "next";
 import { auth } from "~/server/auth/auth";
 import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
+
+const nunito = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700"], // font-light, font-normal, font-semibold, font-bold
+  variable: "--font-nunito",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -19,7 +26,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html lang="en" className={`${GeistSans.variable}`}>
+      <html lang="en" className={`${nunito.variable}`}>
         <body className="flex min-h-screen flex-col">
           {session ? (
             <LoggedInLayout>{children}</LoggedInLayout>

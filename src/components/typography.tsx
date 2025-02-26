@@ -5,7 +5,7 @@ import React from "react";
 const typographyVariants = cva("text-card-foreground font-semibold", {
   variants: {
     variant: {
-      h1: "text-4xl font-extrabold tracking-tight sm:text-5xl",
+      h1: "text-4xl font-normal tracking-wide sm:text-6xl md:text-7xl lg:text-8xl",
       h2: "text-3xl font-bold tracking-tight sm:text-4xl",
       h3: "text-2xl font-semibold tracking-tight sm:text-3xl",
       h4: "text-xl font-semibold sm:text-2xl",
