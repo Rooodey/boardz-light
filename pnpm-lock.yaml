@@ -44,6 +44,9 @@ importers:
       drizzle-orm:
         specifier: ^0.33.0
         version: 0.33.0(@types/react@18.3.18)(postgres@3.4.5)(react@18.3.1)
+      drizzle-zod:
+        specifier: ^0.7.0
+        version: 0.7.0(drizzle-orm@0.33.0(@types/react@18.3.18)(postgres@3.4.5)(react@18.3.1))(zod@3.24.2)
       express-rate-limit:
         specifier: ^7.5.0
         version: 7.5.0(express@4.21.2)
@@ -81,7 +84,7 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17)
       zod:
-        specifier: ^3.23.3
+        specifier: ^3.24.2
         version: 3.24.2
     devDependencies:
       '@types/eslint':
@@ -1519,6 +1522,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-zod@0.7.0:
+    resolution: {integrity: sha512-xgCRYYVEzRkeXTS33GSMgoowe3vKsMNBjSI+cwG1oLQVEhAWWbqtb/AAMlm7tkmV4fG/uJjEmWzdzlEmTgWOoQ==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: '>=3.0.0'
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -4138,6 +4147,11 @@ snapshots:
       '@types/react': 18.3.18
       postgres: 3.4.5
       react: 18.3.1
+
+  drizzle-zod@0.7.0(drizzle-orm@0.33.0(@types/react@18.3.18)(postgres@3.4.5)(react@18.3.1))(zod@3.24.2):
+    dependencies:
+      drizzle-orm: 0.33.0(@types/react@18.3.18)(postgres@3.4.5)(react@18.3.1)
+      zod: 3.24.2
 
   dunder-proto@1.0.1:
     dependencies:
