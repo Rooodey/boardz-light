@@ -4,29 +4,27 @@ import {
   text,
   integer,
   jsonb,
-  primaryKey
+  primaryKey,
+  serial,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const games = pgTable("games", {
-  id: integer("id").primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").unique().notNull(),
   strategies: jsonb("strategy").notNull().default([]),
   image: text("image"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-
-export const gamesSchema = createInsertSchema(games).extend({
-  strategy: z.array(z.string()).min(1, "Mindestens eine Strategie angeben"),
-  image: z.string().url("Bild muss eine gültige URL sein"),
+export const gameSchema = createInsertSchema(games, {
+  strategies: z.array(z.any()),
+  image: z.string().url().optional(),
 });
 
-export type GameInput = z.infer<typeof gamesSchema>;
-
 export const categories = pgTable("categories", {
-  id: integer("id").primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").unique().notNull(),
 });
 
@@ -41,6 +39,6 @@ export const gameCategories = pgTable(
       .references(() => categories.id, { onDelete: "cascade" }),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.gameId, table.categoryId] })
-  })
+    pk: primaryKey({ columns: [table.gameId, table.categoryId] }),
+  }),
 );

@@ -3,9 +3,10 @@ import postgres from "postgres";
 
 import { env } from "~/env";
 import * as auth_schema from "./schemas/auth-schemas";
-import { follows } from "./schemas/follows"
+import { follows } from "./schemas/follows";
+import { userProfiles } from "./schemas/user-profiles";
 
-export const schema = { ...auth_schema, follows }
+export const schema = { ...auth_schema, follows, userProfiles };
 
 /**
  * Cache the database connection in development. This avoids creating a new connection on every HMR
