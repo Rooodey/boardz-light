@@ -23,22 +23,20 @@ export const gameSchema = createInsertSchema(games, {
   image: z.string().url().optional(),
 });
 
-export const categories = pgTable("categories", {
+export const gameCategories = pgTable("game_categories", {
   id: serial("id").primaryKey(),
   name: text("name").unique().notNull(),
 });
 
-export const gameCategories = pgTable(
-  "game_categories",
+export const gameCategoryRelations = pgTable(
+  "game_category_relations",
   {
     gameId: integer("game_id")
       .notNull()
       .references(() => games.id, { onDelete: "cascade" }),
     categoryId: integer("category_id")
       .notNull()
-      .references(() => categories.id, { onDelete: "cascade" }),
+      .references(() => gameCategories.id, { onDelete: "cascade" }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.gameId, table.categoryId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.gameId, table.categoryId] })],
 );

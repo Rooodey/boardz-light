@@ -17,7 +17,7 @@ export const events = pgTable("events", {
     .notNull(),
   title: text("title").notNull(),
   description: text("description"),
-  categoryId: text("category_id")
+  categoryId: integer("category_id")
     .references(() => eventCategories.id)
     .notNull(),
   minGamePoints: integer("min_game_points"),

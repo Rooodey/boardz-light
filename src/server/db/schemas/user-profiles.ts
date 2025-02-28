@@ -1,4 +1,4 @@
-import { timestamp, pgTable, text } from "drizzle-orm/pg-core";
+import { timestamp, pgTable, text, integer } from "drizzle-orm/pg-core";
 import { users } from "./auth-schemas";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -10,6 +10,9 @@ export const userProfiles = pgTable("user_profiles", {
   userName: text("user_name").unique().notNull(),
   realName: text("real_name"),
   bio: text("bio"),
+  points: integer("points").default(0).notNull(),
+  awards: integer("awards").default(0).notNull(),
+  image: text("image"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

@@ -2,13 +2,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/lib/utils";
 import React from "react";
 
-const typographyVariants = cva("text-card-foreground font-semibold", {
+const typographyVariants = cva("text-card-foreground", {
   variants: {
     variant: {
       h1: "text-4xl font-normal tracking-wide sm:text-6xl md:text-7xl lg:text-8xl",
-      h2: "text-3xl font-bold tracking-tight sm:text-4xl",
-      h3: "text-2xl font-semibold tracking-tight sm:text-3xl",
-      h4: "text-xl font-semibold sm:text-2xl",
+      h2: "text-3xl font-semibold sm:text-4xl",
+      h3: "text-2xl sm:text-3xl",
+      h4: "text-xl sm:text-2xl",
       p: "text-base text-muted-foreground",
       small: "text-sm text-muted-foreground",
       muted: "text-sm text-gray-500",

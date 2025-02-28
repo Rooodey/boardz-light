@@ -5,8 +5,14 @@ import { env } from "~/env";
 import * as auth_schema from "./schemas/auth-schemas";
 import { follows } from "./schemas/follows";
 import { userProfiles } from "./schemas/user-profiles";
+import * as friends_schema from "./schemas/friends-schemas";
 
-export const schema = { ...auth_schema, follows, userProfiles };
+export const schema = {
+  ...auth_schema,
+  follows,
+  userProfiles,
+  ...friends_schema,
+};
 
 /**
  * Cache the database connection in development. This avoids creating a new connection on every HMR
