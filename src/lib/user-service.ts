@@ -1,5 +1,7 @@
+"use server";
+
 import { eq, or } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { z } from "zod";
 import { db } from "~/server/db/index";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import {
@@ -15,7 +17,7 @@ export async function getUser(userId: string) {
     .limit(1);
 
   if (!profile.length) {
-    return notFound();
+    return null;
   }
 
   const validatedProfile = userProfileSchema.safeParse(profile[0]);
@@ -41,10 +43,31 @@ export async function getFriends(userId: string) {
     );
 
   if (!friends_result.length) {
-    return notFound();
+    return null;
   }
 
   return friends_result.filter(
     (friend) => friend.user_profiles.userId !== userId,
   );
+}
+
+export async function checkIfUserExists(userId: string) {
+  const profile = await db
+    .select()
+    .from(userProfiles)
+    .where(eq(userProfiles.userId, userId))
+    .limit(1);
+
+  return profile.length > 0;
+}
+
+export async function insertUser(
+  insertData: z.infer<typeof userProfileSchema>,
+) {
+  try {
+    await db.insert(userProfiles).values({ ...insertData });
+  } catch (error) {
+    console.error("Error at inserting UserProfile:", error);
+    throw error; // oder anderweitig behandeln
+  }
 }

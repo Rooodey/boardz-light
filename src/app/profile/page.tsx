@@ -13,14 +13,14 @@ export default async function Page() {
   if (!session?.user?.id) {
     return (
       <AppContainer>
-        <Typography>Kein Benutzer gefunden.</Typography>;
+        <Typography>Not authenticated.</Typography>;
       </AppContainer>
     );
   }
 
   const profile = await getUser(session.user.id);
   const friends = await getFriends(session.user.id);
-  const friend_count = friends.length;
+  const friend_count = friends?.length ?? 0;
 
   return (
     <AppContainer>

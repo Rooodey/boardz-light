@@ -6,6 +6,7 @@ import { Home, Search, PlusCircle, UsersRound, LogOut } from "lucide-react"; // 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import type { DefaultSession } from "next-auth";
 import { signOut } from "next-auth/react";
+import { Typography } from "~/components/typography";
 
 export default function AppNavbar() {
   const { data: session } = useSession();
@@ -14,7 +15,9 @@ export default function AppNavbar() {
     <>
       {/* Desktop Sidebar (sichtbar ab md:) */}
       <nav className="fixed left-0 top-0 hidden h-full w-64 flex-col items-start border-r p-6 shadow-md md:flex">
-        <h1 className="mb-6 text-xl text-primary">BOARDZ</h1>
+        <Typography variant={"h3"} className="mb-6 text-primary">
+          bordz
+        </Typography>
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col space-y-4">
             <SidebarItem href="/" icon={<Home size={24} />} label="Home" />

@@ -1,7 +1,5 @@
+import AppContainer from "~/components/app-container";
+
 export default async function Page() {
-  return (
-    <div className="flex flex-grow flex-col items-center justify-center">
-      groups
-    </div>
-  );
+  return <AppContainer>groups</AppContainer>;
 }

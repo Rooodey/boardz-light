@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { Typography } from "~/components/typography";
 
 export default function TopNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,8 +16,10 @@ export default function TopNav() {
     <nav className="border-b border-border p-4">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="text-xl text-primary">
-          BOARDZ
+        <Link href="/">
+          <Typography variant={"h2"} className="text-primary">
+            bordz
+          </Typography>
         </Link>
 
         {/* Desktop Navigation */}

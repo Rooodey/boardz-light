@@ -18,7 +18,18 @@ export const userProfiles = pgTable("user_profiles", {
 
 export const userProfileSchema = createInsertSchema(userProfiles, {
   userId: z.string().uuid(),
-  userName: z.string().min(6).max(18),
-  realName: z.string().max(24).optional(),
-  bio: z.string().max(120).optional(),
+  userName: z
+    .string()
+    .min(6)
+    .max(24)
+    .regex(/^[a-z0-9_-]+$/, {
+      message:
+        "Only lowercase letters (a-z), numbers (0-9), dashes (-) and underscores (_) are allowed",
+    }),
+  realName: z.string().max(24).nullable().optional(),
+  bio: z.string().max(120).nullable().optional(),
+}).omit({
+  points: true,
+  awards: true,
+  createdAt: true,
 });

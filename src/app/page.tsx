@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AppContainer from "~/components/app-container";
 import { Typography } from "~/components/typography";
 import { Button } from "~/components/ui/button";
 import { auth } from "~/server/auth/auth";
@@ -15,9 +16,9 @@ export default async function HomePage() {
 
 function LoggedInHome() {
   return (
-    <div className="flex flex-grow items-center justify-center p-6">
+    <AppContainer>
       <Typography>Still in progress...</Typography>
-    </div>
+    </AppContainer>
   );
 }
 
@@ -27,7 +28,7 @@ function LoggedOutHome() {
       <div className="flex flex-1 flex-col space-y-20">
         <Typography variant={"h1"}>
           Your <span className="text-accent">Social </span>Network For Your Most
-          Loving Hobby!
+          Beloved Hobby!
         </Typography>
         <Button size={"xl"} className="max-w-fit" asChild>
           <Link href="/login">Joyn The Next Level</Link>

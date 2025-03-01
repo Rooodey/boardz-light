@@ -19,7 +19,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">BOARDZ</CardTitle>
+          <CardTitle className="text-xl">bordz</CardTitle>
           <CardDescription>
             Login with your Apple, Google or Discord account
           </CardDescription>
@@ -28,7 +28,6 @@ export function LoginForm({
           <div className="grid gap-6">
             <div className="flex flex-col gap-4">
               <SignInButton provider="google" />
-              <SignInButton provider="apple" />
               <SignInButton provider="discord" />
             </div>
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
