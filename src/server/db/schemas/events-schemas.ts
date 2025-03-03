@@ -5,8 +5,10 @@ import {
   integer,
   boolean,
   serial,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 import { users } from "./auth-schemas";
+import { tables } from "~/server/db/schemas/tables-schemas";
 
 export const events = pgTable("events", {
   id: text("id")
@@ -56,3 +58,31 @@ export const permissions = pgTable("permissions", {
   id: serial("id").primaryKey(),
   name: text("name").unique().notNull(),
 });
+
+export const tables_at_events = pgTable(
+  "tables_at_events",
+  {
+    tableId: text("table_id")
+      .references(() => tables.id)
+      .notNull(),
+    eventId: text("event_id")
+      .references(() => events.id)
+      .notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.tableId, table.eventId] })],
+);
+
+export const participants_at_events = pgTable(
+  "participants_at_events",
+  {
+    eventId: text("event_id")
+      .references(() => events.id)
+      .notNull(),
+    userId: text("user_id")
+      .references(() => users.id)
+      .notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.eventId, table.userId] })],
+);
