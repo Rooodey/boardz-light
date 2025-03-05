@@ -14,6 +14,7 @@ export const env = createEnv({
     AUTH_GOOGLE_SECRET: z.string().min(1),
     AUTH_APPLE_ID: z.string().min(1),
     AUTH_APPLE_SECRET: z.string().min(1),
+    GOOGLE_MAPS_KEY: z.string().min(1),
     NEXTAUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
@@ -46,6 +47,7 @@ export const env = createEnv({
     AUTH_APPLE_ID: process.env.AUTH_APPLE_ID,
     AUTH_APPLE_SECRET: process.env.AUTH_APPLE_SECRET,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    GOOGLE_MAPS_KEY: process.env.GOOGLE_MAPS_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

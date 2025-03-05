@@ -1,7 +1,7 @@
 "use server";
 
 import { eq, or } from "drizzle-orm";
-import { z } from "zod";
+import type { z } from "zod";
 import { db } from "~/server/db/index";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import {
