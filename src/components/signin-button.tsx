@@ -51,11 +51,15 @@ export default function SignInButton({
 
   const providerData = providerInfo[provider];
 
+  const options = { callbackUrl: "/" };
+  const authorizationParams =
+    provider === "google" ? { prompt: "select_account" } : {};
+
   return (
     <Button
       variant={variant}
       className={cn("w-full", className)}
-      onClick={() => signIn(provider, { callbackUrl: "/" })}
+      onClick={() => signIn(provider, options, authorizationParams)}
     >
       {providerData?.icon}
       Login with {providerData?.name}

@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import {
@@ -10,11 +12,17 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import SignInButton from "~/components/signin-button";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -26,6 +34,17 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <div className="grid gap-6">
+            {error === "OAuthAccountNotLinked" && (
+              <Alert variant="destructive" className="max-w-sm">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Your email is already registered.</AlertTitle>
+                <AlertDescription>
+                  It appears that your email address is already linked to
+                  another provider. Please use that provider to sign in or try a
+                  different account.
+                </AlertDescription>
+              </Alert>
+            )}
             <div className="flex flex-col gap-4">
               <SignInButton provider="google" />
               <SignInButton provider="discord" />
