@@ -23,9 +23,7 @@ import {
   SelectValue,
   SelectContent,
 } from "~/components/ui/select";
-import { getGeoCoordinates } from "~/lib/geo-services";
 import { insertVenue } from "~/lib/table-services";
-import { insertUser } from "~/lib/user-service";
 import {
   allowedCountries,
   venueProfileSchema,

@@ -1,7 +1,31 @@
 "use server";
 
-import { use } from "react";
 import { env } from "~/env.js";
+
+export interface AutocompleteResponse {
+  predictions: Array<{
+    description: string;
+    place_id: string;
+  }>;
+}
+
+export async function fetchAutocomplete(input: string) {
+  if (!input) {
+    return [];
+  }
+  const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${env.GOOGLE_MAPS_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = (await response.json()) as AutocompleteResponse;
+    return data.predictions;
+  } catch (error) {
+    console.error("Error during autocomplete request:", error);
+  }
+}
 
 interface GeocodeLocation {
   lat: number;

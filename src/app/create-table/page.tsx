@@ -1,4 +1,3 @@
-import { Table } from "lucide-react";
 import { TableForm } from "~/app/create-table/components/table-form";
 import AppContainer from "~/components/app-container";
 import { Typography } from "~/components/typography";
