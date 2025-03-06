@@ -1,18 +1,23 @@
 "use server";
 
-import { eq, or } from "drizzle-orm";
+import { eq, or, getTableColumns } from "drizzle-orm";
 import type { z } from "zod";
 import { db } from "~/server/db/index";
+import { users } from "~/server/db/schemas/auth-schemas";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import {
   userProfiles,
   userProfileSchema,
 } from "~/server/db/schemas/user-profiles";
 
-export async function getUser(userId: string) {
+export async function getUserById(userId: string) {
   const profile = await db
-    .select()
+    .select({
+      ...getTableColumns(userProfiles),
+      image: users.image,
+    })
     .from(userProfiles)
+    .leftJoin(users, eq(userProfiles.userId, users.id))
     .where(eq(userProfiles.userId, userId))
     .limit(1);
 
@@ -20,10 +25,22 @@ export async function getUser(userId: string) {
     return null;
   }
 
-  const validatedProfile = userProfileSchema.safeParse(profile[0]);
+  return profile[0];
+}
 
-  if (!validatedProfile.success) {
-    throw new Error("Invalid profile");
+export async function getUserByName(userName: string) {
+  const profile = await db
+    .select({
+      ...getTableColumns(userProfiles),
+      image: users.image,
+    })
+    .from(userProfiles)
+    .leftJoin(users, eq(userProfiles.userId, users.id))
+    .where(eq(userProfiles.userName, userName))
+    .limit(1);
+
+  if (!profile.length) {
+    return null;
   }
 
   return profile[0];

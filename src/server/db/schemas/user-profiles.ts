@@ -12,7 +12,6 @@ export const userProfiles = pgTable("user_profiles", {
   bio: text("bio"),
   points: integer("points").default(0).notNull(),
   awards: integer("awards").default(0).notNull(),
-  image: text("image"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -28,8 +27,13 @@ export const userProfileSchema = createInsertSchema(userProfiles, {
     }),
   realName: z.string().max(24).nullable().optional(),
   bio: z.string().max(120).nullable().optional(),
+  points: z.number().default(0),
+  awards: z.number().default(0),
 }).omit({
-  points: true,
-  awards: true,
   createdAt: true,
 });
+
+export type UserProfile = z.infer<typeof userProfileSchema>;
+export type ExtendedUserProfile = UserProfile & {
+  image?: string | null;
+};

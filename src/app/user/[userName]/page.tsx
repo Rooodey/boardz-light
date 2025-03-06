@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-
-import { eq } from "drizzle-orm";
 import { db } from "~/server/db";
 import { userProfiles } from "~/server/db/schemas/user-profiles";
+import { getUserByName } from "~/lib/user-service";
+import AppContainer from "~/components/app-container";
+import { Profile } from "~/components/profile";
 
 // Optional: Für statische Generierung aller User-Seiten
 export async function generateStaticParams() {
@@ -19,22 +20,15 @@ interface UserPageProps {
 export default async function UserPage({ params }: UserPageProps) {
   const { userName } = await params;
 
-  const userResult = await db
-    .select()
-    .from(userProfiles)
-    .where(eq(userProfiles.userName, userName))
-    .limit(1);
+  const userProfile = await getUserByName(userName);
 
-  if (!userResult || userResult.length === 0) {
+  if (!userProfile) {
     return notFound();
   }
 
-  const currentUser = userResult[0];
-
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">{currentUser?.userName}</h1>
-      {/* Hier kannst du weitere User-Details rendern */}
-    </div>
+    <AppContainer>
+      <Profile profile={userProfile} />
+    </AppContainer>
   );
 }
