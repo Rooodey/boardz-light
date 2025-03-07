@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Expand } from "tailwindcss/types/config";
 import { Typography } from "~/components/typography";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
