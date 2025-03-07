@@ -51,7 +51,7 @@ export const venues = pgTable("venues", {
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-export const venueProfileSchema = createInsertSchema(venues, {
+export const venueSchema = createInsertSchema(venues, {
   userId: z.string().uuid(),
   name: z
     .string()
@@ -72,6 +72,8 @@ export const venueProfileSchema = createInsertSchema(venues, {
   lng: true,
   createdAt: true,
 });
+
+export type Venue = z.infer<typeof venueSchema>;
 
 // SQL Editor:
 // CREATE EXTENSION IF NOT EXISTS cube;

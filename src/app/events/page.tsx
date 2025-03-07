@@ -1,5 +1,5 @@
 import AppContainer from "~/components/app-container";
-import AutocompleteCommand from "~/components/autocomplete-command";
+import { SearchLocation } from "~/components/search-location";
 
 import { getEventsByDistance } from "~/lib/distance-service";
 
@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <AppContainer>
-      <AutocompleteCommand />
+      <SearchLocation />
     </AppContainer>
   );
 }

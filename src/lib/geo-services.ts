@@ -5,6 +5,9 @@ import { env } from "~/env.js";
 export interface AutocompleteResponse {
   predictions: Array<{
     description: string;
+    structured_formatting: {
+      main_text: string;
+    };
     place_id: string;
   }>;
 }
@@ -98,4 +101,22 @@ export async function getGeoCoordinates(
   }
   const { lat, lng } = data.results[0]!.geometry.location;
   return { lat, lng };
+}
+
+interface PlaceDetails {
+  result: {
+    geometry: {
+      location: {
+        lat: number;
+        lng: number;
+      };
+    };
+  };
+}
+
+export async function getCoordinatesFromPlaceId(placeId: string) {
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=geometry&key=${env.GOOGLE_MAPS_KEY}`;
+  const res = await fetch(url);
+  const data = (await res.json()) as PlaceDetails;
+  return data;
 }

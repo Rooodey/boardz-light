@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "~/server/db";
-import { venues } from "~/server/db/schemas/tables-schemas";
 import { sql } from "drizzle-orm";
+import { venues } from "~/server/db/schemas/tables-schemas";
 
 export async function getEventsByDistance(
   currentLat: number,
@@ -12,7 +12,7 @@ export async function getEventsByDistance(
   try {
     const result = await db.execute(sql`
       SELECT 
-        ${venues.name},
+        ${venues}.*, 
         earth_distance(
           ll_to_earth(${currentLat}, ${currentLng}), 
           ll_to_earth(${venues.lat}, ${venues.lng})
