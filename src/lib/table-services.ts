@@ -1,16 +1,11 @@
 "use server";
 
-import { z } from "zod";
+import type { z } from "zod";
 import { getGeoCoordinates } from "~/lib/geo-services";
 import { db } from "~/server/db";
-import {
-  type venueProfileSchema,
-  venues,
-} from "~/server/db/schemas/tables-schemas";
+import { type venueSchema, venues } from "~/server/db/schemas/tables-schemas";
 
-export async function insertVenue(
-  insertData: z.infer<typeof venueProfileSchema>,
-) {
+export async function insertVenue(insertData: z.infer<typeof venueSchema>) {
   let lat: number;
   let lng: number;
   try {

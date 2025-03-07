@@ -26,13 +26,13 @@ import {
 import { insertVenue } from "~/lib/table-services";
 import {
   allowedCountries,
-  venueProfileSchema,
+  venueSchema,
 } from "~/server/db/schemas/tables-schemas";
 
 export function TableForm() {
   const { data, status } = useSession();
   const router = useRouter();
-  const formSchema = venueProfileSchema;
+  const formSchema = venueSchema;
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
