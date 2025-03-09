@@ -8,7 +8,7 @@ import {
   primaryKey,
 } from "drizzle-orm/pg-core";
 import { users } from "./auth-schemas";
-import { tables } from "~/server/db/schemas/tables-schemas";
+import { tables, venues } from "~/server/db/schemas/tables-schemas";
 
 export const events = pgTable("events", {
   id: text("id")
@@ -16,6 +16,9 @@ export const events = pgTable("events", {
     .$defaultFn(() => crypto.randomUUID()),
   userId: text("user_id")
     .references(() => users.id)
+    .notNull(),
+  venueId: text("venue_id")
+    .references(() => venues.id)
     .notNull(),
   title: text("title").notNull(),
   description: text("description"),

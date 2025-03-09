@@ -38,7 +38,7 @@ export function ProfileHeader({ profile, session }: ProfileProps) {
     <div className="flex flex-row items-center justify-between">
       <Typography variant="h3">{profile?.userName}</Typography>
       {session?.user?.id === profile?.userId && (
-        <Link href="/profile/settings">
+        <Link href="/settings">
           <Menu size={24} />
         </Link>
       )}
