@@ -7,7 +7,7 @@ import { users } from "~/server/db/schemas/auth-schemas";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import {
   userProfiles,
-  userProfileSchema,
+  type userProfileSchema,
 } from "~/server/db/schemas/user-profiles";
 
 export async function getUserById(userId: string) {

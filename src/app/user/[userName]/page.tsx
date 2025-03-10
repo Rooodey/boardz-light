@@ -1,10 +1,10 @@
-"use client";
-
 import { redirect } from "next/navigation";
-import { useUserProfile } from "~/contexts/UserProfileContext";
 
-export default function ProfileIndex() {
-  const userProfile = useUserProfile();
+interface UserPageParams {
+  params: { userName: string };
+}
 
-  redirect(`/user/${userProfile.userName}/about`);
+export default async function UserIndexPage({ params }: UserPageParams) {
+  const { userName } = params;
+  redirect(`/user/${userName}/about`);
 }

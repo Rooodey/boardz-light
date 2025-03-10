@@ -1,25 +1,20 @@
-"use client";
-
-import { cn } from "~/lib/utils";
-
-export interface SpinnerProps {
-  classNames?: {
-    root?: string;
-    label?: string;
-  };
-  label?: string;
-}
-
-export default function Spinner({ classNames, label }: SpinnerProps) {
+export default function Loading() {
   return (
-    <div className={cn("flex items-center justify-center", classNames?.root)}>
-      <div
-        className={cn(
-          "animate-spin rounded-full border-4 border-solid border-current border-t-transparent",
-          "h-8 w-8 text-primary",
-        )}
-      />
-      {label && <span className={cn("ml-2", classNames?.label)}>{label}</span>}
+    <div className="flex h-screen w-full flex-col items-center justify-center">
+      <div className="lds-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 }
