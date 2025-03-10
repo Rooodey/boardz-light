@@ -34,7 +34,7 @@ export default function NavLink({
       <a
         ref={linkRef}
         className={cn(
-          "no-scroll-animation whitespace-nowrap pb-2 leading-6 transition-colors",
+          "no-scroll-animation fix-ios-render whitespace-nowrap pb-2 leading-6 transition-colors",
           isActive
             ? "z-50 border-b border-primary font-semibold text-primary"
             : "text-muted-foreground",
