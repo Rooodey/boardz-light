@@ -1,35 +1,36 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { Typography } from "~/components/typography";
+import { cn } from "~/lib/utils";
 
-interface NavLinkProps {
+export interface NavLinkProps {
   href: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export default function NavLink({ href, children }: NavLinkProps) {
+export default function NavLink({
+  href,
+  children,
+  className = "",
+}: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
-  const linkRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (isActive && linkRef.current) {
-      linkRef.current.scrollIntoView({
-        behavior: "auto",
-        inline: "nearest",
-      });
-    }
-  }, [isActive]);
 
   return (
-    <Link
-      href={href}
-      ref={linkRef}
-      className={`${isActive ? "z-50 border-b border-primary font-semibold text-primary" : "text-muted-foreground"} whitespace-nowrap pb-2 transition-colors`}
-    >
-      {children}
+    <Link href={href} legacyBehavior>
+      <a
+        className={cn(
+          "whitespace-nowrap pb-2 transition-colors",
+          isActive
+            ? "z-50 border-b border-primary font-semibold text-primary"
+            : "text-muted-foreground",
+          className,
+        )}
+      >
+        {children}
+      </a>
     </Link>
   );
 }
