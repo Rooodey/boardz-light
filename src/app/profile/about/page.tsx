@@ -1,3 +1,3 @@
 export default async function Page() {
-  return <div>game-type</div>;
+  return <div>about</div>;
 }

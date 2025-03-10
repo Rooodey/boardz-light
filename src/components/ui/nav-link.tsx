@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Typography } from "~/components/typography";
 
 interface NavLinkProps {
   href: string;
@@ -14,9 +15,13 @@ export default function NavLink({ href, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`${isActive ? "-mb-2 border-b border-primary font-semibold text-primary" : ""} transition-colors`}
+      className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2 transition-colors`}
     >
-      {children}
+      <Typography
+        className={`${isActive ? "font-semibold text-primary" : ""} whitespace-nowrap transition-colors`}
+      >
+        {children}
+      </Typography>
     </Link>
   );
 }

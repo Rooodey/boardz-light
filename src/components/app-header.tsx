@@ -14,7 +14,7 @@ export default function AppHeader({ title, children }: AppHeaderProps) {
 
   return (
     <>
-      <div className="fixed top-0 z-50 flex h-12 w-full max-w-xl -translate-x-4 items-center justify-center border-b border-border sm:-translate-x-6">
+      <div className="fixed top-0 z-50 flex h-12 w-full max-w-xl -translate-x-4 items-center justify-center border-b border-border md:-translate-x-6">
         <button onClick={() => router.back()} className="absolute left-0 p-2">
           <ChevronLeft size={24} />
         </button>
