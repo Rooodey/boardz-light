@@ -12,23 +12,23 @@ interface NavLinkProps {
 export default function NavLink({ href, children }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
-  const linkRef = useRef<HTMLAnchorElement>(null);
+  // const linkRef = useRef<HTMLAnchorElement>(null);
 
-  useEffect(() => {
-    if (isActive && linkRef.current) {
-      setTimeout(() => {
-        linkRef.current?.scrollIntoView({
-          behavior: "auto",
-          inline: "nearest",
-        });
-      }, 200);
-    }
-  }, [isActive]);
+  // useEffect(() => {
+  //   if (isActive && linkRef.current) {
+  //     setTimeout(() => {
+  //       linkRef.current?.scrollIntoView({
+  //         behavior: "auto",
+  //         inline: "nearest",
+  //       });
+  //     }, 200);
+  //   }
+  // }, [isActive]);
 
   return (
     <Link
       href={href}
-      ref={linkRef}
+      // ref={linkRef}
       className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2 transition-colors`}
     >
       <Typography
