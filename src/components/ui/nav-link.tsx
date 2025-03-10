@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { cn } from "~/lib/utils";
 
 export interface NavLinkProps {
@@ -17,12 +18,23 @@ export default function NavLink({
 }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (isActive && linkRef.current) {
+      linkRef.current.scrollIntoView({
+        behavior: "auto",
+        inline: "nearest",
+      });
+    }
+  }, [isActive]);
 
   return (
     <Link href={href} legacyBehavior>
       <a
+        ref={linkRef}
         className={cn(
-          "whitespace-nowrap pb-2 transition-colors",
+          "antialiased-text no-scroll-animation whitespace-nowrap pb-2 transition-colors",
           isActive
             ? "z-50 border-b border-primary font-semibold text-primary"
             : "text-muted-foreground",
