@@ -1,3 +1,5 @@
-export default async function Page() {
-  return <div></div>;
+import { redirect } from "next/navigation";
+
+export default function ProfileIndex() {
+  redirect("/profile/about");
 }
