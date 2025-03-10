@@ -30,7 +30,7 @@ export default async function UserPage({ params, children }: UserPageProps) {
     return notFound();
   }
   const tabs: Tab[] = [
-    { href: `/user/${userName}/about`, name: "About" },
+    { href: `/user/${userName}`, name: "About" },
     { href: `/user/${userName}/highscores`, name: "Highscores" },
     { href: `/user/${userName}/played`, name: "Played" },
     { href: `/user/${userName}/tables`, name: "Tables" },

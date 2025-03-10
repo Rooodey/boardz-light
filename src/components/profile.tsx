@@ -1,11 +1,11 @@
-import { Menu } from "lucide-react";
-import Link from "next/link";
 import { Typography } from "~/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import type { ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
 import type { DefaultSession } from "next-auth";
 import { Button } from "~/components/ui/button";
 import { getFriends } from "~/lib/user-service";
+
+import ProfileHeader from "~/components/profile-header";
 
 interface ProfileProps {
   profile: ExtendedUserProfile;
@@ -30,19 +30,6 @@ export async function Profile({ profile, session }: ProfileProps) {
         </Button>
       </div>
     </>
-  );
-}
-
-export function ProfileHeader({ profile, session }: ProfileProps) {
-  return (
-    <div className="flex flex-row items-center justify-between">
-      <Typography variant="h3">{profile?.userName}</Typography>
-      {session?.user?.id === profile?.userId && (
-        <Link href="/settings">
-          <Menu size={24} />
-        </Link>
-      )}
-    </div>
   );
 }
 

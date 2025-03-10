@@ -8,7 +8,7 @@ import ProfileTabs, { type Tab } from "~/components/profile-tabs";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 
 const tabs: Tab[] = [
-  { href: "/profile/about", name: "About" },
+  { href: "/profile", name: "About" },
   { href: "/profile/highscores", name: "Highscores" },
   { href: "/profile/played", name: "Played" },
   { href: "/profile/tables", name: "Tables" },
