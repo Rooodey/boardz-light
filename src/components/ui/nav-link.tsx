@@ -1,5 +1,4 @@
 "use client";
-import { is } from "drizzle-orm";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -31,8 +30,7 @@ export default function NavLink({ href, children }: NavLinkProps) {
       className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2 transition-colors`}
     >
       <Typography
-        variant={isActive ? "highlighted" : "p"}
-        className={"whitespace-nowrap transition-colors"}
+        className={`${isActive ? "font-semibold !text-primary" : ""} whitespace-nowrap transition-colors`}
       >
         {children}
       </Typography>
