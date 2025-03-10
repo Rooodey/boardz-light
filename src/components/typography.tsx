@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/lib/utils";
 import React from "react";
 
-const typographyVariants = cva("text-card-foreground", {
+const typographyVariants = cva("text-card-foreground leading-6", {
   variants: {
     variant: {
       h1: "text-4xl tracking-wide sm:text-6xl md:text-7xl lg:text-8xl",
