@@ -3,7 +3,7 @@ import NavLink from "~/components/ui/nav-link";
 export default function ProfileTabs() {
   return (
     <div className="relative -mx-4 px-4 pt-2 md:-mx-6 md:px-6">
-      <div className="scrollbar-hide z-50 flex flex-row gap-8 overflow-x-auto">
+      <div className="no-scroll-animation z-50 flex flex-row gap-8 overflow-x-auto">
         <NavLink href="/profile/about">About</NavLink>
         <NavLink href="/profile/highscores">Highscores</NavLink>
         <NavLink href="/profile/played">Played</NavLink>

@@ -66,3 +66,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+.no-scroll-animation {
+  scroll-behavior: auto;
+  overscroll-behavior: none;
+  scrollbar-width: none;
+}
+.no-scroll-animation::-webkit-scrollbar {
+  display: none;
+}
