@@ -27,7 +27,7 @@ export default async function RootLayout({
 
   return (
     <SessionProvider session={session}>
-      <html lang="en" className={`${nunito.variable}`}>
+      <html lang="en" className={`${nunito.variable} antialiased`}>
         <body className="flex min-h-screen flex-col">
           {session ? (
             <LoggedInLayout>{children}</LoggedInLayout>
