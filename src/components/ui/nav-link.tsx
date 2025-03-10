@@ -16,11 +16,12 @@ export default function NavLink({ href, children }: NavLinkProps) {
 
   useEffect(() => {
     if (isActive && linkRef.current) {
-      // Scrollt den Link in den sichtbaren Bereich, z.B. zentriert ihn horizontal
-      linkRef.current.scrollIntoView({
-        behavior: "auto",
-        inline: "nearest",
-      });
+      setTimeout(() => {
+        linkRef.current?.scrollIntoView({
+          behavior: "auto",
+          inline: "nearest",
+        });
+      }, 50);
     }
   }, [isActive]);
 
