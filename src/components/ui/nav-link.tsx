@@ -27,14 +27,9 @@ export default function NavLink({ href, children }: NavLinkProps) {
     <Link
       href={href}
       ref={linkRef}
-      className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2 transition-colors`}
+      className={`${isActive ? "z-50 border-b border-primary font-semibold text-primary" : "text-muted-foreground"} whitespace-nowrap pb-2 transition-colors`}
     >
-      <Typography
-        variant={"tab"}
-        className={`${isActive ? "font-semibold !text-primary" : "!text-muted-foreground"} whitespace-nowrap transition-colors`}
-      >
-        {children}
-      </Typography>
+      {children}
     </Link>
   );
 }

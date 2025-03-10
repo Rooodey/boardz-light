@@ -12,7 +12,6 @@ const typographyVariants = cva("text-card-foreground", {
       p: "text-base text-muted-foreground",
       small: "text-sm text-muted-foreground",
       muted: "text-sm text-gray-500",
-      tab: "text-base",
     },
   },
   defaultVariants: {
