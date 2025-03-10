@@ -29,10 +29,10 @@ export default function NavLink({ href, children }: NavLinkProps) {
     <Link
       href={href}
       ref={linkRef}
-      className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2 transition-colors`}
+      className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2`}
     >
       <Typography
-        className={`${isActive ? "font-semibold text-primary" : ""} whitespace-nowrap leading-6 transition-colors`}
+        className={`${isActive ? "font-semibold text-primary" : ""} whitespace-nowrap`}
       >
         {children}
       </Typography>
