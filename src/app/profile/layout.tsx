@@ -4,9 +4,18 @@ import { auth } from "~/server/auth/auth";
 import { getUserById } from "~/lib/user-service";
 import { Profile } from "~/components/profile";
 import { notFound } from "next/navigation";
-import ProfileTabs from "~/components/profile-tabs";
+import ProfileTabs, { type Tab } from "~/components/profile-tabs";
+import UserProfileProvider from "~/contexts/UserProfileProvider";
 
-export default async function Page({
+const tabs: Tab[] = [
+  { href: "/profile/about", name: "About" },
+  { href: "/profile/highscores", name: "Highscores" },
+  { href: "/profile/played", name: "Played" },
+  { href: "/profile/tables", name: "Tables" },
+  { href: "/profile/latest", name: "Latest Events" },
+];
+
+export default async function ProfileLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -16,7 +25,7 @@ export default async function Page({
   if (!session?.user?.id) {
     return (
       <AppContainer>
-        <Typography>Not authenticated.</Typography>;
+        <Typography>Not authenticated.</Typography>
       </AppContainer>
     );
   }
@@ -28,10 +37,12 @@ export default async function Page({
   }
 
   return (
-    <AppContainer>
-      <Profile profile={userProfile} session={session} />
-      <ProfileTabs />
-      {children}
-    </AppContainer>
+    <UserProfileProvider userProfile={userProfile}>
+      <AppContainer>
+        <Profile profile={userProfile} session={session} />
+        <ProfileTabs tabs={tabs} />
+        {children}
+      </AppContainer>
+    </UserProfileProvider>
   );
 }
