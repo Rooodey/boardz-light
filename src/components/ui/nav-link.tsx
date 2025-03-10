@@ -19,8 +19,7 @@ export default function NavLink({ href, children }: NavLinkProps) {
       // Scrollt den Link in den sichtbaren Bereich, z.B. zentriert ihn horizontal
       linkRef.current.scrollIntoView({
         behavior: "auto",
-        inline: "center",
-        block: "nearest",
+        inline: "nearest",
       });
     }
   }, [isActive]);
@@ -29,10 +28,10 @@ export default function NavLink({ href, children }: NavLinkProps) {
     <Link
       href={href}
       ref={linkRef}
-      className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2`}
+      className={`${isActive ? "z-50 border-b border-primary" : ""} pb-2 transition-colors`}
     >
       <Typography
-        className={`${isActive ? "font-semibold text-primary" : ""} whitespace-nowrap`}
+        className={`${isActive ? "font-semibold text-primary" : ""} whitespace-nowrap transition-colors`}
       >
         {children}
       </Typography>
