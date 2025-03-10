@@ -21,7 +21,7 @@ export default function NavLink({ href, children }: NavLinkProps) {
           behavior: "auto",
           inline: "nearest",
         });
-      }, 50);
+      }, 200);
     }
   }, [isActive]);
 
