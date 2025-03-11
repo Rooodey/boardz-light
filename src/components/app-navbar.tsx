@@ -124,7 +124,7 @@ export default function AppNavbar() {
             icon={
               <HomeIcon
                 className="h-7 w-7 text-muted-foreground"
-                style={{ strokeWidth: 1.2 }}
+                style={{ strokeWidth: 1.5 }}
               />
             }
             iconActive={
@@ -145,7 +145,7 @@ export default function AppNavbar() {
             iconActive={
               <MagnifyingGlassIcon
                 className="h-8 w-8 text-accent"
-                style={{ strokeWidth: 2 }}
+                style={{ strokeWidth: 1.5 }}
               />
             }
           />
@@ -160,7 +160,7 @@ export default function AppNavbar() {
             iconActive={
               <TrophyIconSolid
                 className="h-8 w-8 text-accent"
-                style={{ strokeWidth: 1.5 }}
+                style={{ strokeWidth: 2 }}
               />
             }
           />
