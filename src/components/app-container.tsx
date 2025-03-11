@@ -17,7 +17,7 @@ export default async function AppContainer({
   }
 
   return (
-    <div className="relative mx-auto flex w-screen flex-grow flex-col gap-4 bg-white p-4 shadow-sm md:max-w-xl md:p-6">
+    <div className="relative mx-auto flex w-screen flex-grow flex-col gap-4 bg-white p-4 shadow-sm md:max-w-2xl md:p-6">
       {children}
     </div>
   );
