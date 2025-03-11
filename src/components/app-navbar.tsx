@@ -124,7 +124,7 @@ export default function AppNavbar() {
             icon={
               <HomeIcon
                 className="h-7 w-7 text-muted-foreground"
-                style={{ strokeWidth: 1.5 }}
+                style={{ strokeWidth: 1.2 }}
               />
             }
             iconActive={

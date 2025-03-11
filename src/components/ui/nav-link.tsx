@@ -31,6 +31,7 @@ export default function NavLink({
       navLinkRef.current.scrollIntoView({
         behavior: "auto",
         inline: "center",
+        block: "nearest",
       });
     }
   }, [isActive, navLinkRef]);
