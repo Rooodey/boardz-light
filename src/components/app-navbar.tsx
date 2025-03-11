@@ -206,7 +206,7 @@ function NavItem({
   iconActive: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <Link href={href} className="hover:text-accent">
@@ -227,7 +227,7 @@ function SidebarItem({
   label: string;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <Link
