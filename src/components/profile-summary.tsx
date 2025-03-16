@@ -17,8 +17,12 @@ export default function ProfileSummary() {
   useEffect(() => {
     async function fetchFriends() {
       if (profile?.userId) {
-        const friends = await getFriends(profile.userId);
-        setFriendCount(friends?.length ?? 0);
+        try {
+          const friends = await getFriends(profile.userId);
+          setFriendCount(friends?.length ?? 0);
+        } catch (error) {
+          console.error("Error fetching friends:", error);
+        }
       }
     }
     fetchFriends();

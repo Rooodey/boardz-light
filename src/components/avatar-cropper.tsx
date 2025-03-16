@@ -3,7 +3,7 @@
 import React, { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import { Slider } from "~/components/ui/slider";
-import { Area } from "react-easy-crop";
+import type { Area } from "react-easy-crop";
 import getCroppedImg from "~/lib/cropImage";
 import { Button } from "~/components/ui/button";
 
@@ -62,7 +62,7 @@ export default function AvatarCropper({
           min={1}
           max={3}
           step={0.1}
-          onValueChange={(value) => setZoom(value[0] as number)}
+          onValueChange={(value) => setZoom(value[0]!)}
         />
       </div>
       <div className="mt-4 flex justify-end gap-2">

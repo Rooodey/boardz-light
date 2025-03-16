@@ -10,10 +10,10 @@ import { useUserProfile } from "~/contexts/UserProfileContext";
 export default function ProfileHeader() {
   const { data: session } = useSession();
   const { profile } = useUserProfile();
+  const router = useRouter();
   if (!profile) {
     return null;
   }
-  const router = useRouter();
   return (
     <>
       {session?.user?.id === profile.userId ? (
