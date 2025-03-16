@@ -1,19 +1,19 @@
 "use client";
 
+import { ReactNode, useState } from "react";
 import { UserProfileContext } from "./UserProfileContext";
 import type { ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
 
-interface UserProfileProviderProps {
-  userProfile: ExtendedUserProfile;
-  children: React.ReactNode;
-}
-
 export default function UserProfileProvider({
-  userProfile,
   children,
-}: UserProfileProviderProps) {
+  initialProfile,
+}: {
+  children: ReactNode;
+  initialProfile: ExtendedUserProfile;
+}) {
+  const [profile, setProfile] = useState<ExtendedUserProfile>(initialProfile);
   return (
-    <UserProfileContext.Provider value={userProfile}>
+    <UserProfileContext.Provider value={{ profile, setProfile }}>
       {children}
     </UserProfileContext.Provider>
   );

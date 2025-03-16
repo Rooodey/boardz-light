@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import type { DefaultSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import { Typography } from "~/components/typography";
 import { usePathname } from "next/navigation";
@@ -19,11 +17,9 @@ import {
 } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { LogOut } from "lucide-react";
+import { useUserProfile } from "~/contexts/UserProfileContext";
 
 export default function AppNavbar() {
-  const { data: session } = useSession();
-  const pathname = usePathname();
-
   return (
     <>
       {/* Desktop Sidebar (sichtbar ab md:) */}
@@ -99,8 +95,8 @@ export default function AppNavbar() {
             />
             <SidebarItem
               href="/profile"
-              icon={<AvatarIcon session={session} />}
-              iconActive={<AvatarIcon session={session} />}
+              icon={<AvatarIcon />}
+              iconActive={<AvatarIcon />}
               label="Profile"
             />
           </div>
@@ -181,12 +177,9 @@ export default function AppNavbar() {
           />
           <NavItem
             href="/profile"
-            icon={<AvatarIcon session={session} className="h-7 w-7" />}
+            icon={<AvatarIcon className="h-7 w-7" />}
             iconActive={
-              <AvatarIcon
-                session={session}
-                className="h-8 w-8 border-2 border-accent"
-              />
+              <AvatarIcon className="h-8 w-8 border-2 border-accent" />
             }
           />
         </div>
@@ -240,22 +233,18 @@ function SidebarItem({
   );
 }
 
-function AvatarIcon({
-  session,
-  className = "h-6 w-6",
-}: {
-  session: DefaultSession | null;
-  className?: string;
-}) {
+function AvatarIcon({ className = "h-6 w-6" }: { className?: string }) {
+  const { profile } = useUserProfile();
+
   return (
     <Avatar className={className}>
       <AvatarImage
-        src={session?.user?.image ?? "/default-avatar.png"}
+        src={profile?.image ?? "/default-avatar.png"}
         alt="User avatar"
         onError={(e) => (e.currentTarget.src = "/default-avatar.png")}
       />
       <AvatarFallback>
-        {session?.user?.name?.charAt(0).toUpperCase() ?? "U"}
+        {profile?.userName?.charAt(0).toUpperCase() ?? "U"}
       </AvatarFallback>
     </Avatar>
   );

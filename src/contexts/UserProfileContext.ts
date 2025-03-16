@@ -3,9 +3,14 @@
 import type { ExtendedUserProfile } from "./../server/db/schemas/user-profiles";
 import { createContext, useContext } from "react";
 
-export const UserProfileContext = createContext<ExtendedUserProfile | null>(
-  null,
-);
+interface UserProfileContextProps {
+  profile: ExtendedUserProfile | null;
+  setProfile: React.Dispatch<React.SetStateAction<ExtendedUserProfile>>;
+}
+
+export const UserProfileContext = createContext<
+  UserProfileContextProps | undefined
+>(undefined);
 
 export function useUserProfile() {
   const context = useContext(UserProfileContext);

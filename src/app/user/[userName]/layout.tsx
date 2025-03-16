@@ -25,10 +25,10 @@ export default async function UserPage({ params, children }: UserPageProps) {
   const { userName } = await params;
 
   const userProfile = await getUserByName(userName);
-
   if (!userProfile) {
     return notFound();
   }
+
   const tabs: Tab[] = [
     { href: `/user/${userName}`, name: "About" },
     { href: `/user/${userName}/highscores`, name: "Highscores" },
@@ -38,12 +38,12 @@ export default async function UserPage({ params, children }: UserPageProps) {
   ];
 
   return (
-    <UserProfileProvider userProfile={userProfile}>
-      <AppContainer>
-        <Profile profile={userProfile} />
+    <AppContainer>
+      <UserProfileProvider initialProfile={userProfile}>
+        <Profile />
         <ProfileTabs tabs={tabs} />
         {children}
-      </AppContainer>
-    </UserProfileProvider>
+      </UserProfileProvider>
+    </AppContainer>
   );
 }

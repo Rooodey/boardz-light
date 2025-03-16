@@ -1,29 +1,24 @@
 "use client";
 
 import { ChevronLeft, Menu } from "lucide-react";
-import type { DefaultSession } from "next-auth";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Typography } from "~/components/typography";
-import type { ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
+import { useUserProfile } from "~/contexts/UserProfileContext";
 
-interface ProfileProps {
-  profile: ExtendedUserProfile;
-  session?: DefaultSession;
-  children?: React.ReactNode;
-}
-
-export default function ProfileHeader({
-  profile,
-  session,
-  children,
-}: ProfileProps) {
+export default function ProfileHeader() {
+  const { data: session } = useSession();
+  const { profile } = useUserProfile();
+  if (!profile) {
+    return null;
+  }
   const router = useRouter();
   return (
     <>
       {session?.user?.id === profile.userId ? (
         <>
-          <div className="fixed top-0 z-50 flex h-12 w-full -translate-x-4 items-center justify-center border-b border-border bg-white md:h-16 md:max-w-2xl md:-translate-x-6">
+          <div className="fixed top-0 z-50 flex h-12 w-full -translate-x-4 items-center justify-center border-b border-border bg-white md:h-16 md:w-[calc(100%-256px)] md:max-w-2xl md:-translate-x-6">
             <Typography
               variant="h3"
               className="absolute left-0 top-6 -translate-y-[50%] pl-4 md:top-8 md:pl-6"
@@ -41,7 +36,7 @@ export default function ProfileHeader({
         </>
       ) : (
         <>
-          <div className="fixed top-0 z-50 flex h-12 w-full -translate-x-4 items-center justify-center border-b border-border bg-white md:h-16 md:max-w-2xl md:-translate-x-6">
+          <div className="fixed top-0 z-50 flex h-12 w-full -translate-x-4 items-center justify-center border-b border-border bg-white md:h-16 md:w-[calc(100%-256px)] md:max-w-2xl md:-translate-x-6">
             <button
               onClick={() => router.back()}
               className="absolute left-0 top-6 -translate-y-[50%] pl-2 md:top-8 md:pl-4"

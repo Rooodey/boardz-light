@@ -10,6 +10,23 @@ import {
   type userProfileSchema,
 } from "~/server/db/schemas/user-profiles";
 
+export async function updateUserImage(
+  userId: string,
+  newImageUrl: string,
+): Promise<string> {
+  try {
+    await db
+      .update(users)
+      .set({ image: newImageUrl })
+      .where(eq(users.id, userId));
+    console.log("User image updated successfully.");
+    return newImageUrl;
+  } catch (error) {
+    console.error("Failed to update user image:", error);
+    throw error;
+  }
+}
+
 export async function getUserById(userId: string) {
   const profile = await db
     .select({

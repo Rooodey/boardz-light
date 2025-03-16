@@ -6,6 +6,10 @@ import { type Metadata } from "next";
 import { auth } from "~/server/auth/auth";
 import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
+import { getUserById } from "~/lib/user-service";
+import { DefaultSession } from "next-auth";
+import { notFound } from "next/navigation";
+import UserProfileProvider from "~/contexts/UserProfileProvider";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -30,7 +34,7 @@ export default async function RootLayout({
       <html lang="en" className={`${nunito.variable} antialiased`}>
         <body className="flex min-h-screen flex-col">
           {session ? (
-            <LoggedInLayout>{children}</LoggedInLayout>
+            <LoggedInLayout session={session}>{children}</LoggedInLayout>
           ) : (
             <LoggedOutLayout>{children}</LoggedOutLayout>
           )}
@@ -49,11 +53,25 @@ function LoggedOutLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function LoggedInLayout({ children }: { children: React.ReactNode }) {
+async function LoggedInLayout({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: DefaultSession;
+}) {
+  if (!session?.user?.id) {
+    return notFound();
+  }
+  const userProfile = await getUserById(session.user.id);
+
+  if (!userProfile) {
+    return notFound();
+  }
   return (
-    <>
+    <UserProfileProvider initialProfile={userProfile}>
       <AppNavbar />
       <main className="flex flex-grow md:ml-64">{children}</main>
-    </>
+    </UserProfileProvider>
   );
 }
