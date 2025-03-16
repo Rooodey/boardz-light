@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -23,39 +24,41 @@ import {
   SelectValue,
   SelectContent,
 } from "~/components/ui/select";
-import { insertVenue } from "~/lib/table-services";
-import {
-  allowedCountries,
-  venueSchema,
-} from "~/server/db/schemas/tables-schemas";
+import { Textarea } from "~/components/ui/textarea";
+import { getVenuesByUserId, insertTable } from "~/lib/table-services";
+import { tableSchema, TableType } from "~/server/db/schemas/tables-schemas";
 
 export function TableForm() {
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
+  const { data } = useQuery({
+    queryKey: ["venues", session?.user.id],
+    queryFn: () => getVenuesByUserId(session?.user.id ?? ""),
+  });
+  const mutation = useMutation({
+    mutationFn: async (values: TableType) => {
+      await insertTable(values);
+    },
+    onSuccess: () => {
+      router.back();
+    },
+    onError: (error) => {
+      console.error("Error inserting table:", error);
+    },
+  });
   const router = useRouter();
-  const formSchema = venueSchema;
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof tableSchema>>({
+    resolver: zodResolver(tableSchema),
     defaultValues: {
-      userId: data?.user.id,
+      userId: session?.user.id,
+      venueId: "",
       name: "",
-      adressLine1: "",
-      adressLine2: "",
-      zip: "",
-      city: "",
-      country: "DE",
-      bellName: "",
+      description: "",
+      access: "private",
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await insertVenue(values);
-      router.push("/events");
-    } catch (error) {
-      console.error("Error at inserting UserProfile:", error);
-    }
+  async function onSubmit(values: z.infer<typeof tableSchema>) {
+    mutation.mutate(values);
   }
 
   return (
@@ -63,100 +66,41 @@ export function TableForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="name"
+          name="venueId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Venue Name</FormLabel>
-              <FormControl>
-                <Input placeholder="your_venue_name" {...field} />
-              </FormControl>
-              <FormDescription>This is your public venue name.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="adressLine1"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address Line 1</FormLabel>
-              <FormControl>
-                <Input placeholder="Street and number" {...field} />
-              </FormControl>
-              <FormDescription>Enter your street address.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="adressLine2"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address Line 2 (optional)</FormLabel>
-              <FormControl>
-                <Input placeholder="Apartment, suite, etc." {...field} />
-              </FormControl>
-              <FormDescription>Additional address details.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="zip"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Postal Code</FormLabel>
-              <FormControl>
-                <Input placeholder="Zip / Postal Code" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="city"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>City</FormLabel>
-              <FormControl>
-                <Input placeholder="City" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Country (optional)</FormLabel>
+              <FormLabel>Venue</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Country" />
+                    <SelectValue placeholder="Choose your venue" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {allowedCountries.map((country) => (
-                    <SelectItem key={country} value={country}>
-                      {country}
+                  {data?.map((venue) => (
+                    <SelectItem key={venue.id} value={venue.id}>
+                      {venue.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               <FormDescription>
-                Wähle den Ländercode aus (z.B. DE, US).
+                The location where your table is located.
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Table Name</FormLabel>
+              <FormControl>
+                <Input placeholder="your_table_name" {...field} />
+              </FormControl>
+              <FormDescription>This is your public table name.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -164,14 +108,37 @@ export function TableForm() {
 
         <FormField
           control={form.control}
-          name="bellName"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name On The Doorbell (optional)</FormLabel>
+              <FormLabel>Table Description</FormLabel>
               <FormControl>
-                <Input placeholder="Name On The Doorbell" {...field} />
+                <Textarea placeholder="Describe your table..." {...field} />
               </FormControl>
-
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="access"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Accessibility</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select..." />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="private">Private</SelectItem>
+                  <SelectItem value="public">Public</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Choose who can create an event with your table.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

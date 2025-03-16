@@ -31,7 +31,7 @@ function LoggedOutHome() {
           Beloved Hobby!
         </Typography>
         <Button size={"xl"} className="max-w-fit" asChild>
-          <Link href="/login">Joyn The Next Level</Link>
+          <Link href="/login">Joyn Our Community</Link>
         </Button>
       </div>
       <div className="flex-1"></div>

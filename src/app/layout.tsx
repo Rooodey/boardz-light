@@ -10,6 +10,7 @@ import { getUserById } from "~/lib/user-service";
 import { DefaultSession } from "next-auth";
 import { notFound } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
+import { ReactQueryProvider } from "~/lib/react-query-provider";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -30,17 +31,19 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <SessionProvider session={session}>
-      <html lang="en" className={`${nunito.variable} antialiased`}>
-        <body className="flex min-h-screen flex-col">
-          {session ? (
-            <LoggedInLayout session={session}>{children}</LoggedInLayout>
-          ) : (
-            <LoggedOutLayout>{children}</LoggedOutLayout>
-          )}
-        </body>
-      </html>
-    </SessionProvider>
+    <html lang="en" className={`${nunito.variable} antialiased`}>
+      <body className="flex min-h-screen flex-col">
+        <SessionProvider session={session}>
+          <ReactQueryProvider>
+            {session ? (
+              <LoggedInLayout session={session}>{children}</LoggedInLayout>
+            ) : (
+              <LoggedOutLayout>{children}</LoggedOutLayout>
+            )}
+          </ReactQueryProvider>
+        </SessionProvider>
+      </body>
+    </html>
   );
 }
 

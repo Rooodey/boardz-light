@@ -1,6 +1,4 @@
-import { Typography } from "~/components/typography";
 import AppContainer from "~/components/app-container";
-import { auth } from "~/server/auth/auth";
 import { Profile } from "~/components/profile";
 import ProfileTabs, { type Tab } from "~/components/profile-tabs";
 
@@ -17,16 +15,6 @@ export default async function ProfileLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    return (
-      <AppContainer>
-        <Typography>Not authenticated.</Typography>
-      </AppContainer>
-    );
-  }
-
   return (
     <AppContainer>
       <Profile />
