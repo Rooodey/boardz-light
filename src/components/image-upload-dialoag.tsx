@@ -89,8 +89,8 @@ export function ImageUploadDialog() {
         {imageSrc ? (
           <AvatarCropper
             imageSrc={imageSrc}
-            onCropComplete={handleCropComplete}
-            onCancel={handleCancel}
+            onCropCompleteAction={handleCropComplete}
+            onCancelAction={handleCancel}
           />
         ) : (
           <div className="flex flex-col items-center space-y-4">

@@ -9,14 +9,14 @@ import { Button } from "~/components/ui/button";
 
 interface AvatarCropperProps {
   imageSrc: string;
-  onCropComplete: (croppedImageUrl: string) => void;
-  onCancel: () => void;
+  onCropCompleteAction: (croppedImageUrl: string) => void;
+  onCancelAction: () => void;
 }
 
 export default function AvatarCropper({
   imageSrc,
-  onCropComplete,
-  onCancel,
+  onCropCompleteAction,
+  onCancelAction,
 }: AvatarCropperProps) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -36,7 +36,7 @@ export default function AvatarCropper({
           imageSrc,
           croppedAreaPixels,
         );
-        onCropComplete(croppedImageUrl);
+        onCropCompleteAction(croppedImageUrl);
       } catch (error) {
         console.error("Error cropping image:", error);
       }
@@ -66,7 +66,7 @@ export default function AvatarCropper({
         />
       </div>
       <div className="mt-4 flex justify-end gap-2">
-        <Button onClick={onCancel} variant={"outline"}>
+        <Button onClick={onCancelAction} variant={"outline"}>
           Cancel
         </Button>
         <Button onClick={handleSave} variant={"accent"}>
