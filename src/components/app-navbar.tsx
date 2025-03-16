@@ -113,7 +113,7 @@ export default function AppNavbar() {
       </nav>
 
       {/* Mobile Bottom Navbar (sichtbar bis md:) */}
-      <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-white shadow-md md:hidden">
+      <nav className="fixed bottom-0 left-0 z-50 h-14 w-full border-t bg-white shadow-md md:hidden">
         <div className="flex items-center justify-around py-3">
           <NavItem
             href="/"
@@ -125,7 +125,7 @@ export default function AppNavbar() {
             }
             iconActive={
               <HomeIconSolid
-                className="h-8 w-8 text-accent"
+                className="h-7 w-7 text-accent"
                 style={{ strokeWidth: 1.5 }}
               />
             }
@@ -140,7 +140,7 @@ export default function AppNavbar() {
             }
             iconActive={
               <MagnifyingGlassIcon
-                className="h-8 w-8 text-accent"
+                className="h-7 w-7 text-accent"
                 style={{ strokeWidth: 1.5 }}
               />
             }
@@ -155,7 +155,7 @@ export default function AppNavbar() {
             }
             iconActive={
               <TrophyIconSolid
-                className="h-8 w-8 text-accent"
+                className="h-7 w-7 text-accent"
                 style={{ strokeWidth: 2 }}
               />
             }
@@ -170,7 +170,7 @@ export default function AppNavbar() {
             }
             iconActive={
               <UserGroupIconSolid
-                className="h-8 w-8 text-accent"
+                className="h-7 w-7 text-accent"
                 style={{ strokeWidth: 1.5 }}
               />
             }
@@ -179,7 +179,7 @@ export default function AppNavbar() {
             href="/profile"
             icon={<AvatarIcon className="h-7 w-7" />}
             iconActive={
-              <AvatarIcon className="h-8 w-8 border-2 border-accent" />
+              <AvatarIcon className="h-7 w-7 border-2 border-accent" />
             }
           />
         </div>
