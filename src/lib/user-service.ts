@@ -6,6 +6,7 @@ import { db } from "~/server/db/index";
 import { users } from "~/server/db/schemas/auth-schemas";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import {
+  ExtendedUserProfile,
   userProfiles,
   type userProfileSchema,
 } from "~/server/db/schemas/user-profiles";
@@ -104,4 +105,13 @@ export async function insertUser(
     console.error("Error at inserting UserProfile:", error);
     throw error; // oder anderweitig behandeln
   }
+}
+
+export async function getUsers() {
+  const result = await db
+    .select()
+    .from(userProfiles)
+    .leftJoin(users, eq(userProfiles.userId, users.id));
+
+  return result;
 }
