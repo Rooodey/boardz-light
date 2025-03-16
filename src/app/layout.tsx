@@ -2,7 +2,7 @@ import "~/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 
 import { Nunito_Sans } from "next/font/google";
-import { type Metadata } from "next";
+import { Viewport, type Metadata } from "next";
 import { auth } from "~/server/auth/auth";
 import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
@@ -23,7 +23,14 @@ export const metadata: Metadata = {
   title: "bordz",
   description: "Social Network for Boardgamers",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
-  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default async function RootLayout({
