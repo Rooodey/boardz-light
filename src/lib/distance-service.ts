@@ -3,21 +3,53 @@
 import { db } from "~/server/db";
 import { sql } from "drizzle-orm";
 import { venues } from "~/server/db/schemas/tables-schemas";
+import { EventInput } from "~/server/db/types/event-types";
+import { events } from "~/server/db/schemas/events-schemas";
+
+// export async function getEventsByDistance(
+//   currentLat: number,
+//   currentLng: number,
+//   kmRadius: number,
+// ) {
+//   try {
+//     const result = await db.execute(sql`
+//       SELECT
+//         ${venues}.*,
+//         earth_distance(
+//           ll_to_earth(${currentLat}, ${currentLng}),
+//           ll_to_earth(${venues.lat}, ${venues.lng})
+//         ) AS distance
+//       FROM ${venues}
+//       WHERE
+//         earth_distance(
+//           ll_to_earth(${currentLat}, ${currentLng}),
+//           ll_to_earth(${venues.lat}, ${venues.lng})
+//         ) <= ${kmRadius * 1000}
+//       ORDER BY distance ASC
+//       LIMIT 100;
+//     `);
+//     return result;
+//   } catch (error) {
+//     console.error(error);
+//     throw new Error("Error at getting events by distance");
+//   }
+// }
 
 export async function getEventsByDistance(
   currentLat: number,
   currentLng: number,
   kmRadius: number,
-) {
+): Promise<(EventInput & { distance: number })[]> {
   try {
     const result = await db.execute(sql`
       SELECT 
-        ${venues}.*, 
+        ${events}.*, 
         earth_distance(
           ll_to_earth(${currentLat}, ${currentLng}), 
           ll_to_earth(${venues.lat}, ${venues.lng})
         ) AS distance
-      FROM ${venues}
+      FROM ${events}
+      JOIN ${venues} ON ${events}.venue_id = ${venues}.id
       WHERE 
         earth_distance(
           ll_to_earth(${currentLat}, ${currentLng}), 
@@ -26,7 +58,7 @@ export async function getEventsByDistance(
       ORDER BY distance ASC
       LIMIT 100;
     `);
-    return result;
+    return result as unknown as (EventInput & { distance: number })[];
   } catch (error) {
     console.error(error);
     throw new Error("Error at getting events by distance");

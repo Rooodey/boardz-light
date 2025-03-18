@@ -1,9 +1,12 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Typography } from "~/components/typography";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { useAutocomplete } from "~/hooks/useAutocomplete";
+import { useEventsByDistance } from "~/hooks/useEventsByDistance";
 import { getEventsByDistance } from "~/lib/distance-service";
 import {
   type AutocompleteResponse,
@@ -22,26 +25,15 @@ export type ExpandedVenue = Venue & { distance: number };
 
 export function SearchLocation() {
   const [isFocused, setIsFocused] = useState(false);
-  const [predictions, setPredictions] = useState<
-    AutocompleteResponse["predictions"]
-  >([]);
+
   const [input, setInput] = useState("");
   const [location, setLocation] = useState<LocationType | null>(null);
-  const [venues, setVenues] = useState<ExpandedVenue[]>([]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const fetchPredictions = async () => {
-        const predictions = await fetchAutocomplete(input);
-        setPredictions(predictions ?? []);
-        console.log("predictions:", predictions);
-      };
-
-      void fetchPredictions();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [input]);
+  const { data: predictions } = useAutocomplete(input);
+  const { data: events } = useEventsByDistance(
+    location?.lat ?? null,
+    location?.lng ?? null,
+  );
 
   async function handleSelect(
     selectedPrediction: AutocompleteResponse["predictions"][0],
@@ -52,32 +44,33 @@ export function SearchLocation() {
       lat: coords.result.geometry.location.lat,
       lng: coords.result.geometry.location.lng,
     });
-  }
-
-  async function handleUseLocation() {
-    setIsFocused(false);
     setInput(location?.description ?? "");
-    if (!location) return;
-    const result = await getEventsByDistance(location.lat, location.lng, 100);
-    if (result) {
-      setVenues(result as unknown as ExpandedVenue[]);
-    }
+    setIsFocused(false);
   }
 
-  function handleFocus() {
-    setIsFocused(true);
-    console.log("focus");
-  }
   return (
     <>
       <div className="flex flex-row items-center justify-between gap-4">
-        <Input
-          placeholder="Choose your location..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onFocus={handleFocus}
-          className="z-50"
-        />
+        <div className="relative w-full">
+          <Input
+            placeholder="Choose your location..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            className="z-50 pr-10"
+          />
+          {input && (
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground"
+              onClick={() => {
+                setInput("");
+              }}
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
         {isFocused && (
           <button
             onClick={() => setIsFocused(false)}
@@ -89,9 +82,9 @@ export function SearchLocation() {
       </div>
       {!isFocused ? (
         <div className="">
-          {venues?.map((venue) => (
-            <div key={venue.id}>
-              {venue.name} ({Math.ceil(venue.distance / 1000)}km)
+          {events?.map((event) => (
+            <div key={event.id}>
+              {event.title} ({Math.ceil(event.distance / 1000)}km)
             </div>
           ))}
         </div>
@@ -99,17 +92,16 @@ export function SearchLocation() {
         <div className="mt-4 flex flex-col space-y-16">
           <div className="flex flex-col items-start justify-start gap-4">
             <Typography className="mb-4">Suggestions</Typography>
-            {predictions.map((prediction) => (
+            {predictions?.map((prediction) => (
               <button
                 key={prediction.place_id}
-                onMouseDown={() => handleSelect(prediction)}
+                onClick={() => handleSelect(prediction)}
                 className="text-left"
               >
                 {prediction.description}
               </button>
             ))}
           </div>
-          <Button onClick={handleUseLocation}>Use Location</Button>
         </div>
       )}
     </>
