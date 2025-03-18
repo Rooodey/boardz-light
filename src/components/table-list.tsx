@@ -18,6 +18,7 @@ export default function TableList() {
     queryKey: ["tables", session?.user.id],
     queryFn: () => getTablesByUserId(session?.user.id ?? ""),
   });
+  console.log("🚀 Tables:", data);
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       {!data && <Typography>No Tables yet...</Typography>}

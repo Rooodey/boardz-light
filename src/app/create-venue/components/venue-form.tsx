@@ -30,7 +30,7 @@ import {
 } from "~/server/db/schemas/tables-schemas";
 
 export function TableForm() {
-  const { data, status } = useSession();
+  const { data } = useSession();
   const router = useRouter();
   const formSchema = venueSchema;
   // 1. Define your form.

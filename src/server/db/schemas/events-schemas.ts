@@ -66,10 +66,10 @@ export const tables_at_events = pgTable(
   "tables_at_events",
   {
     tableId: text("table_id")
-      .references(() => tables.id)
+      .references(() => tables.id, { onDelete: "cascade" })
       .notNull(),
     eventId: text("event_id")
-      .references(() => events.id)
+      .references(() => events.id, { onDelete: "cascade" })
       .notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
@@ -80,10 +80,10 @@ export const participants_at_events = pgTable(
   "participants_at_events",
   {
     eventId: text("event_id")
-      .references(() => events.id)
+      .references(() => events.id, { onDelete: "cascade" })
       .notNull(),
     userId: text("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },

@@ -6,7 +6,6 @@ import { db } from "~/server/db/index";
 import { users } from "~/server/db/schemas/auth-schemas";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import {
-  ExtendedUserProfile,
   userProfiles,
   type userProfileSchema,
 } from "~/server/db/schemas/user-profiles";

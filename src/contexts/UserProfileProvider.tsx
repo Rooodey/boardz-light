@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { UserProfileContext } from "./UserProfileContext";
 import type { ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
 

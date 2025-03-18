@@ -1,4 +1,4 @@
-import { timestamp, pgTable, text, real } from "drizzle-orm/pg-core";
+import { timestamp, pgTable, text, real, integer } from "drizzle-orm/pg-core";
 import { users } from "./auth-schemas";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -17,6 +17,7 @@ export const tables = pgTable("tables", {
   description: text("description"),
   access: text("access").notNull(),
   image: text("image"),
+  score: integer("score").default(0).notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -34,6 +35,7 @@ export const tableSchema = createInsertSchema(tables, {
   description: z.string().optional(),
   access: z.enum(["public", "private"]),
   image: z.string().url().optional(),
+  score: z.number().default(0).optional(),
 }).omit({
   createdAt: true,
 });

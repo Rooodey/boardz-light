@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
+import EventCard from "~/components/event-card";
 import { Typography } from "~/components/typography";
 import { Input } from "~/components/ui/input";
 import { useAutocomplete } from "~/hooks/useAutocomplete";
@@ -79,10 +80,12 @@ export function SearchLocation() {
       </div>
       {!isFocused ? (
         <div className="">
-          {events?.map((event) => (
-            <div key={event.id}>
-              {event.title} ({Math.ceil(event.distance / 1000)}km)
-            </div>
+          {events?.map(({ id, ...eventProps }, i) => (
+            <EventCard
+              key={id}
+              {...eventProps}
+              isLast={i === events.length - 1}
+            />
           ))}
         </div>
       ) : (
