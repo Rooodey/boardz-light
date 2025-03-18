@@ -1,3 +1,5 @@
-export default async function Page() {
-  return <div>tables</div>;
+import TableList from "~/components/table-list";
+
+export default function Page() {
+  return <TableList />;
 }
