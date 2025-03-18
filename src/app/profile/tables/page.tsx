@@ -30,16 +30,19 @@ export default function Page() {
           Create New Table
         </Button>
       )}
-      {data?.map((table) => (
-        <Suspense key={table.id} fallback={<div>loading...</div>}>
-          <TableCard
-            key={table.id}
-            image={table.image}
-            name={table.name}
-            description={table.description}
-          />
-        </Suspense>
-      ))}
+      <div className="w-full">
+        {data?.map((table, index) => (
+          <Suspense key={table.id} fallback={<div>loading...</div>}>
+            <TableCard
+              key={table.id}
+              image={table.image}
+              name={table.name}
+              description={table.description}
+              isLast={index === data.length - 1}
+            />
+          </Suspense>
+        ))}
+      </div>
     </div>
   );
 }

@@ -9,6 +9,7 @@ const typographyVariants = cva("text-card-foreground", {
       h2: "text-3xl sm:text-4xl",
       h3: "text-2xl sm:text-3xl",
       h4: "text-xl sm:text-2xl",
+      h5: "text-l sm:text-xl",
       p: "text-base text-muted-foreground",
       small: "text-sm text-muted-foreground",
       muted: "text-sm text-gray-500",
@@ -33,7 +34,9 @@ export function Typography({ variant, className, ...props }: TypographyProps) {
           ? "h3"
           : variant === "h4"
             ? "h4"
-            : "p";
+            : variant === "h5"
+              ? "h5"
+              : "p";
 
   return (
     <Tag

@@ -6,7 +6,7 @@ import "./src/env.js";
 
 const config = {
   images: {
-    domains: ["wsbmutuofpxrrpfseuei.supabase.co"],
+    domains: ["wsbmutuofpxrrpfseuei.supabase.co", "lh3.googleusercontent.com"],
   },
   typescript: {
     ignoreBuildErrors: true,
