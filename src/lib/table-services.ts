@@ -5,7 +5,7 @@ import type { z } from "zod";
 import { getGeoCoordinates } from "~/lib/geo-services";
 import { db } from "~/server/db";
 import {
-  tableSchema,
+  type tableSchema,
   tables,
   type venueSchema,
   venues,

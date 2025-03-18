@@ -28,10 +28,10 @@ import { insertEvent } from "~/lib/event-service";
 import { getVenuesByUserId } from "~/lib/table-services";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { EventInput, eventSchema } from "~/server/db/types/event-types";
+import { type EventInput, eventSchema } from "~/server/db/types/event-types";
 
 export function EventForm() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { data } = useQuery({
     queryKey: ["venues", session?.user.id],
     queryFn: () => getVenuesByUserId(session?.user.id ?? ""),

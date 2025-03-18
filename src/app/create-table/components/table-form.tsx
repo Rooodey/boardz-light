@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -26,10 +26,13 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { getVenuesByUserId, insertTable } from "~/lib/table-services";
-import { tableSchema, TableType } from "~/server/db/schemas/tables-schemas";
+import {
+  tableSchema,
+  type TableType,
+} from "~/server/db/schemas/tables-schemas";
 
 export function TableForm() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { data } = useQuery({
     queryKey: ["venues", session?.user.id],
     queryFn: () => getVenuesByUserId(session?.user.id ?? ""),

@@ -4,7 +4,7 @@ import { getEventsByDistance } from "~/lib/distance-service";
 export function useEventsByDistance(
   lat: number | null,
   lng: number | null,
-  radius: number = 100,
+  radius = 100,
 ) {
   return useQuery({
     queryKey: ["events", lat, lng, radius],

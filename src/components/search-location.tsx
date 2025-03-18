@@ -1,16 +1,13 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Typography } from "~/components/typography";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { useAutocomplete } from "~/hooks/useAutocomplete";
 import { useEventsByDistance } from "~/hooks/useEventsByDistance";
-import { getEventsByDistance } from "~/lib/distance-service";
 import {
   type AutocompleteResponse,
-  fetchAutocomplete,
   getCoordinatesFromPlaceId,
 } from "~/lib/geo-services";
 import type { Venue } from "~/server/db/schemas/tables-schemas";

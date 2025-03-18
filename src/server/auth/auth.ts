@@ -6,7 +6,6 @@ import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
 import Apple from "next-auth/providers/apple";
 import type { DefaultSession } from "next-auth";
-import { checkIfUserExists } from "~/lib/user-service";
 
 declare module "next-auth" {
   interface Session {

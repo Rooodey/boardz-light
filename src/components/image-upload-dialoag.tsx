@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ChangeEvent, useRef } from "react";
+import React, { useState, type ChangeEvent, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react";
 import AvatarCropper from "~/components/avatar-cropper";
 import { uploadAvatar } from "~/lib/file-upload";
 import { useUserProfile } from "~/contexts/UserProfileContext";
-import { ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
+import { type ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
 
 export function ImageUploadDialog() {
   const [open, setOpen] = useState(false);

@@ -3,7 +3,7 @@
 import { db } from "~/server/db";
 import { sql } from "drizzle-orm";
 import { venues } from "~/server/db/schemas/tables-schemas";
-import { EventInput } from "~/server/db/types/event-types";
+import type { EventInput } from "~/server/db/types/event-types";
 import { events } from "~/server/db/schemas/events-schemas";
 
 // export async function getEventsByDistance(

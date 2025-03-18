@@ -2,12 +2,12 @@ import "~/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 
 import { Nunito_Sans } from "next/font/google";
-import { Viewport, type Metadata } from "next";
+import { type Viewport, type Metadata } from "next";
 import { auth } from "~/server/auth/auth";
 import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
 import { getUserById } from "~/lib/user-service";
-import { DefaultSession } from "next-auth";
+import { type DefaultSession } from "next-auth";
 import { notFound } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 import { ReactQueryProvider } from "~/lib/react-query-provider";
