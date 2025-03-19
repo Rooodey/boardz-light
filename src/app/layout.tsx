@@ -8,7 +8,7 @@ import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
 import { getUserById } from "~/lib/user-service";
 import { type DefaultSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 import { ReactQueryProvider } from "~/lib/react-query-provider";
 
@@ -77,7 +77,7 @@ async function LoggedInLayout({
   const userProfile = await getUserById(session.user.id);
 
   if (!userProfile) {
-    return notFound();
+    redirect("/onboarding");
   }
   return (
     <UserProfileProvider initialProfile={userProfile}>
