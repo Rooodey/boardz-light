@@ -11,6 +11,8 @@ import { type DefaultSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 import { ReactQueryProvider } from "~/lib/react-query-provider";
+import { Typography } from "~/components/typography";
+import { OnboardingForm } from "./onboarding/components/onboarding-form";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -77,7 +79,19 @@ async function LoggedInLayout({
   const userProfile = await getUserById(session.user.id);
 
   if (!userProfile) {
-    redirect("/onboarding");
+    return (
+      <>
+        <AppNavbar />
+        <main className="mb-14 flex flex-grow md:mb-0 md:ml-64">
+          <div className="relative mx-auto flex max-w-xl flex-grow flex-col gap-4 p-4 sm:p-6">
+            <Typography variant={"h3"}>
+              Please complete your first login:{" "}
+            </Typography>
+            <OnboardingForm />
+          </div>
+        </main>
+      </>
+    );
   }
   return (
     <UserProfileProvider initialProfile={userProfile}>
