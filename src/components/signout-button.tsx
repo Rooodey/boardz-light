@@ -1,16 +1,20 @@
 "use client";
 
-import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { type ReactNode } from "react";
+import { Button, type ButtonProps } from "~/components/ui/button";
 
-export default function SignOutButton() {
+interface SignOutButtonProps extends ButtonProps {
+  children?: ReactNode;
+}
+
+export default function SignOutButton({
+  children = "Sign Out",
+  ...props
+}: SignOutButtonProps) {
   return (
-    <button
-      className="flex items-center space-x-3 text-gray-700 hover:text-black"
-      onClick={() => signOut()}
-    >
-      <LogOut size={24} />
-      <span className="text-lg">Sign Out</span>
-    </button>
+    <Button {...props} onClick={() => signOut()}>
+      {children}
+    </Button>
   );
 }

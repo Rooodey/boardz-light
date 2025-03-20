@@ -5,8 +5,12 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Typography } from "~/components/typography";
+import { useSession } from "next-auth/react";
+import SignOutButton from "~/components/signout-button";
+import { Button } from "~/components/ui/button";
 
 export default function TopNav() {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -24,21 +28,30 @@ export default function TopNav() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-6 md:flex">
-          <Link href="/events" className="text-lg hover:text-foreground/70">
-            Events
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
-          >
-            Login
-          </Link>
+          {session ? (
+            <SignOutButton>Sign Out</SignOutButton>
+          ) : (
+            <>
+              <Link href="/events" className="text-lg hover:text-foreground/70">
+                Events
+              </Link>
+              <Button asChild>
+                <Link href="/login" onClick={closeMenu}>
+                  Login
+                </Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Navigation Button */}
-        <button onClick={toggleMenu} className="relative z-50 md:hidden">
-          {isOpen ? <X size={32} /> : <Menu size={32} />}
-        </button>
+        {session ? (
+          <SignOutButton className="md:hidden">Sign Out</SignOutButton>
+        ) : (
+          <button onClick={toggleMenu} className="relative z-50 md:hidden">
+            {isOpen ? <X size={32} /> : <Menu size={32} />}
+          </button>
+        )}
       </div>
 
       {/* Fullscreen Mobile Menu */}
@@ -57,13 +70,11 @@ export default function TopNav() {
           </Link>
         </div>
 
-        <Link
-          href="/login"
-          className="block w-full max-w-[80%] rounded-md bg-primary px-6 py-3 text-center text-primary-foreground hover:bg-primary/90"
-          onClick={closeMenu}
-        >
-          Login
-        </Link>
+        <Button className="w-full max-w-[80%]" asChild>
+          <Link href="/login" onClick={closeMenu}>
+            Login
+          </Link>
+        </Button>
       </motion.div>
     </nav>
   );

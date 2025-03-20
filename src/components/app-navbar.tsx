@@ -18,6 +18,7 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { LogOut } from "lucide-react";
 import { useUserProfile } from "~/contexts/UserProfileContext";
+import SignOutButton from "~/components/signout-button";
 
 export default function AppNavbar() {
   return (
@@ -101,13 +102,13 @@ export default function AppNavbar() {
             />
           </div>
           <div>
-            <button
-              className="flex items-center space-x-3 hover:text-foreground/70"
-              onClick={() => signOut()}
+            <SignOutButton
+              variant="nothing"
+              className="flex items-center space-x-3 hover:text-accent"
             >
               <LogOut size={24} />
               <span className="text-lg">Sign Out</span>
-            </button>
+            </SignOutButton>
           </div>
         </div>
       </nav>

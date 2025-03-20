@@ -8,11 +8,11 @@ import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
 import { getUserById } from "~/lib/user-service";
 import { type DefaultSession } from "next-auth";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 import { ReactQueryProvider } from "~/lib/react-query-provider";
 import { Typography } from "~/components/typography";
-import { OnboardingForm } from "./onboarding/components/onboarding-form";
+import { OnboardingForm } from "../components/onboarding-form";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -80,14 +80,17 @@ async function LoggedInLayout({
 
   if (!userProfile) {
     return (
-      <main className="mb-14 flex flex-grow md:mb-0 md:ml-64">
-        <div className="relative mx-auto flex max-w-xl flex-grow flex-col gap-4 p-4 sm:p-6">
-          <Typography variant={"h3"}>
-            Please complete your first login:{" "}
-          </Typography>
-          <OnboardingForm />
-        </div>
-      </main>
+      <>
+        <TopNav />
+        <main className="flex flex-grow">
+          <div className="relative mx-auto flex max-w-xl flex-grow flex-col gap-4 p-4 sm:p-6">
+            <Typography variant={"h3"}>
+              Please complete your first login:{" "}
+            </Typography>
+            <OnboardingForm />
+          </div>
+        </main>
+      </>
     );
   }
   return (
