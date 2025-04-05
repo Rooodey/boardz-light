@@ -8,7 +8,7 @@ import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
 import { getUserById } from "~/lib/user-service";
 import { type DefaultSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 import { ReactQueryProvider } from "~/lib/react-query-provider";
 import { Typography } from "~/components/typography";
@@ -74,7 +74,7 @@ async function LoggedInLayout({
   session: DefaultSession;
 }) {
   if (!session?.user?.id) {
-    return notFound();
+    redirect("/login");
   }
   const userProfile = await getUserById(session.user.id);
 
@@ -96,7 +96,11 @@ async function LoggedInLayout({
   return (
     <UserProfileProvider initialProfile={userProfile}>
       <AppNavbar />
-      <main className="mb-14 flex flex-grow md:mb-0 md:ml-64">{children}</main>
+      <main className="mb-14 flex flex-grow md:mb-0 md:ml-64">
+        <div className="relative mx-auto flex w-full flex-grow flex-col gap-4 bg-white p-4 shadow-sm md:max-w-2xl md:p-6">
+          {children}
+        </div>
+      </main>
     </UserProfileProvider>
   );
 }

@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { db } from "~/server/db";
 import { userProfiles } from "~/server/db/schemas/user-profiles";
 import { getUserByName } from "~/lib/user-service";
-import AppContainer from "~/components/app-container";
 import { Profile } from "~/components/profile";
 import ProfileTabs, { type Tab } from "~/components/profile-tabs";
 import React from "react";
@@ -38,12 +37,10 @@ export default async function UserPage({ params, children }: UserPageProps) {
   ];
 
   return (
-    <AppContainer>
-      <UserProfileProvider initialProfile={userProfile}>
-        <Profile />
-        <ProfileTabs tabs={tabs} />
-        {children}
-      </UserProfileProvider>
-    </AppContainer>
+    <UserProfileProvider initialProfile={userProfile}>
+      <Profile />
+      <ProfileTabs tabs={tabs} />
+      {children}
+    </UserProfileProvider>
   );
 }

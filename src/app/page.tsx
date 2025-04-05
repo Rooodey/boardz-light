@@ -1,5 +1,4 @@
 import Link from "next/link";
-import AppContainer from "~/components/app-container";
 import { Typography } from "~/components/typography";
 import { Button } from "~/components/ui/button";
 import { auth } from "~/server/auth/auth";
@@ -15,11 +14,7 @@ export default async function HomePage() {
 }
 
 function LoggedInHome() {
-  return (
-    <AppContainer>
-      <Typography>Still in progress...</Typography>
-    </AppContainer>
-  );
+  return <Typography>Still in progress...</Typography>;
 }
 
 function LoggedOutHome() {

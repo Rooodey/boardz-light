@@ -42,7 +42,7 @@ export function TableForm() {
       await insertTable(values);
     },
     onSuccess: () => {
-      router.back();
+      router.push("/profile/tables");
     },
     onError: (error) => {
       console.error("Error inserting table:", error);
@@ -76,7 +76,13 @@ export function TableForm() {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose your venue" />
+                    <SelectValue
+                      placeholder={
+                        data?.length === 0
+                          ? "You have no venue yet..."
+                          : "Choose your venue"
+                      }
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -94,6 +100,14 @@ export function TableForm() {
             </FormItem>
           )}
         />
+        <Button
+          variant="outline"
+          className="w-full"
+          type="button"
+          onClick={() => router.push("/create-venue")}
+        >
+          Create Venue
+        </Button>
         <FormField
           control={form.control}
           name="name"

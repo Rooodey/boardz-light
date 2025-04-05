@@ -6,7 +6,20 @@ import "./src/env.js";
 
 const config = {
   images: {
-    domains: ["wsbmutuofpxrrpfseuei.supabase.co", "lh3.googleusercontent.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "wsbmutuofpxrrpfseuei.supabase.co",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,

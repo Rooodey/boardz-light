@@ -52,7 +52,7 @@ export function VenueForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await insertVenue(values);
-      router.push("/events");
+      router.push("/create-table");
     } catch (error) {
       console.error("Error at inserting UserProfile:", error);
     }

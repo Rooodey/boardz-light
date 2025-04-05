@@ -1,4 +1,3 @@
-import AppContainer from "~/components/app-container";
 import { Profile } from "~/components/profile";
 import ProfileTabs, { type Tab } from "~/components/profile-tabs";
 
@@ -16,10 +15,10 @@ export default async function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AppContainer>
+    <>
       <Profile />
       <ProfileTabs tabs={tabs} />
       {children}
-    </AppContainer>
+    </>
   );
 }
