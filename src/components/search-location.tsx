@@ -27,7 +27,9 @@ export function SearchLocation() {
   const [input, setInput] = useState("");
   const [location, setLocation] = useState<LocationType | null>(null);
 
-  const { data: predictions } = useAutocomplete(input);
+  const { data: predictions } = useAutocomplete(input) as {
+    data: AutocompleteResponse["predictions"];
+  };
   const { data: events } = useEventsByDistance(
     location?.lat ?? null,
     location?.lng ?? null,

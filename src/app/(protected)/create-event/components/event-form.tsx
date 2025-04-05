@@ -49,10 +49,9 @@ export function EventForm() {
   });
 
   const router = useRouter();
-  const formSchema = eventSchema;
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<EventInput>({
+    resolver: zodResolver(eventSchema),
     defaultValues: {
       userId: session?.user.id ?? "",
       venueId: "",
@@ -62,7 +61,7 @@ export function EventForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof eventSchema>) {
+  function onSubmit(values: EventInput) {
     console.log("Form values:", values);
     const result = eventSchema.safeParse(values);
     if (!result.success) {

@@ -29,4 +29,4 @@ export const eventSchema = createInsertSchema(events, {
 });
 
 // 🎯 TypeScript-Typ aus Zod-Schema ableiten
-export type EventInput = z.infer<typeof eventSchema>;
+export type EventInput = z.input<typeof eventSchema>;
