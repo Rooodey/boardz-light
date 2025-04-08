@@ -1,116 +1,170 @@
 "use server";
 
+import { error } from "console";
 import { eq, or, getTableColumns } from "drizzle-orm";
-import type { z } from "zod";
+
+import {
+  ActionResult,
+  extractPostgresError,
+  isPostgresError,
+  notFoundError,
+  tryCatch,
+  validationError,
+} from "~/lib/error";
 import { db } from "~/server/db/index";
 import { users } from "~/server/db/schemas/auth-schemas";
 import { friends } from "~/server/db/schemas/friends-schemas";
+import { userProfiles } from "~/server/db/schemas/user-profiles";
 import {
-  userProfiles,
-  type userProfileSchema,
-} from "~/server/db/schemas/user-profiles";
+  ExtendedUserProfileSelectType,
+  UserProfileInputType,
+  UserProfileInsertSchema,
+} from "~/server/db/types/user-types";
 
 export async function updateUserImage(
   userId: string,
   newImageUrl: string,
-): Promise<string> {
-  try {
-    await db
-      .update(users)
-      .set({ image: newImageUrl })
-      .where(eq(users.id, userId));
-    console.log("User image updated successfully.");
-    return newImageUrl;
-  } catch (error) {
-    console.error("Failed to update user image:", error);
-    throw error;
-  }
-}
-
-export async function getUserById(userId: string) {
-  const profile = await db
-    .select({
-      ...getTableColumns(userProfiles),
-      image: users.image,
-    })
-    .from(userProfiles)
-    .leftJoin(users, eq(userProfiles.userId, users.id))
-    .where(eq(userProfiles.userId, userId))
-    .limit(1);
-
-  if (!profile.length) {
-    return null;
-  }
-
-  return profile[0];
-}
-
-export async function getUserByName(userName: string) {
-  const profile = await db
-    .select({
-      ...getTableColumns(userProfiles),
-      image: users.image,
-    })
-    .from(userProfiles)
-    .leftJoin(users, eq(userProfiles.userId, users.id))
-    .where(eq(userProfiles.userName, userName))
-    .limit(1);
-
-  if (!profile.length) {
-    return null;
-  }
-
-  return profile[0];
-}
-
-export async function getFriends(userId: string) {
-  const friends_result = await db
-    .select()
-    .from(friends)
-    .where(or(eq(friends.userId1, userId), eq(friends.userId2, userId)))
-    .innerJoin(
-      userProfiles,
-      or(
-        eq(userProfiles.userId, friends.userId1),
-        eq(userProfiles.userId, friends.userId2),
-      ),
-    );
-
-  if (!friends_result.length) {
-    return null;
-  }
-
-  return friends_result.filter(
-    (friend) => friend.user_profiles.userId !== userId,
+): Promise<ActionResult<string>> {
+  const result = await tryCatch(
+    db.update(users).set({ image: newImageUrl }).where(eq(users.id, userId)),
   );
+  if (result.error) {
+    return { data: null, error: result.error };
+  } else if (result.data?.length === 0) {
+    return notFoundError("User not found.");
+  }
+  return { data: newImageUrl, error: null };
 }
 
-export async function checkIfUserExists(userId: string) {
-  const profile = await db
-    .select()
-    .from(userProfiles)
-    .where(eq(userProfiles.userId, userId))
-    .limit(1);
+export async function getUserById(
+  userId: string,
+): Promise<ActionResult<ExtendedUserProfileSelectType | undefined | null>> {
+  const result = await tryCatch(
+    db
+      .select({
+        ...getTableColumns(userProfiles),
+        image: users.image,
+      })
+      .from(userProfiles)
+      .leftJoin(users, eq(userProfiles.userId, users.id))
+      .where(eq(userProfiles.userId, userId))
+      .limit(1)
+      .execute(),
+  );
+  if (result.error) {
+    return { data: null, error: result.error };
+  }
+  if (result.data.length === 0) {
+    return { data: null, error: null };
+  }
+  return { data: result.data[0], error: null };
+}
 
-  return profile.length > 0;
+export async function getUserByName(
+  userName: string,
+): Promise<ActionResult<ExtendedUserProfileSelectType | undefined | null>> {
+  const result = await tryCatch(
+    db
+      .select({
+        ...getTableColumns(userProfiles),
+        image: users.image,
+      })
+      .from(userProfiles)
+      .leftJoin(users, eq(userProfiles.userId, users.id))
+      .where(eq(userProfiles.userName, userName))
+      .limit(1)
+      .execute(),
+  );
+  if (result.error) {
+    return { data: null, error: result.error };
+  }
+  if (result.data.length === 0) {
+    return { data: null, error: null };
+  }
+  return { data: result.data[0], error: null };
+}
+
+export async function getFriends(userId: string): Promise<ActionResult<any>> {
+  const result = await tryCatch(
+    db
+      .select({
+        userId: userProfiles.userId,
+        userName: userProfiles.userName,
+        points: userProfiles.points,
+        image: users.image,
+      })
+      .from(friends)
+      .innerJoin(
+        userProfiles,
+        or(
+          eq(userProfiles.userId, friends.userId1),
+          eq(userProfiles.userId, friends.userId2),
+        ),
+      )
+      .innerJoin(users, eq(userProfiles.userId, users.id))
+      .where(or(eq(friends.userId1, userId), eq(friends.userId2, userId)))
+      .execute(),
+  );
+  if (result.error) {
+    return { data: null, error: result.error };
+  }
+  if (result.data.length === 0) {
+    return { data: [], error: null };
+  }
+  return {
+    data: result.data.filter((friend) => friend.userId !== userId),
+    error: null,
+  };
+}
+
+export async function checkIfUserExists(
+  userId: string,
+): Promise<ActionResult<boolean>> {
+  const result = await tryCatch(
+    db
+      .select()
+      .from(userProfiles)
+      .where(eq(userProfiles.userId, userId))
+      .limit(1)
+      .execute(),
+  );
+  if (result.error) {
+    return { data: null, error: result.error };
+  }
+  return { data: result.data.length > 0, error: null };
 }
 
 export async function insertUser(
-  insertData: z.infer<typeof userProfileSchema>,
-) {
-  try {
-    await db.insert(userProfiles).values({ ...insertData });
-  } catch (error) {
-    console.error("Error at inserting UserProfile:", error);
-    throw error; // oder anderweitig behandeln
+  input: UserProfileInputType,
+): Promise<ActionResult<null>> {
+  const parsed = UserProfileInsertSchema.safeParse(input);
+  if (!parsed.success) {
+    return validationError("Error at validating user input.");
   }
+  const userData = parsed.data;
+  const result = await tryCatch(db.insert(userProfiles).values(userData));
+  if (result.error) {
+    return { data: null, error: result.error };
+  }
+  return { data: null, error: null };
 }
 
-export async function getUsers() {
-  const result = await db
-    .select()
-    .from(userProfiles)
-    .leftJoin(users, eq(userProfiles.userId, users.id));
+export async function getUsers(): Promise<
+  ActionResult<ExtendedUserProfileSelectType[]>
+> {
+  const result = await tryCatch(
+    db
+      .select({
+        ...getTableColumns(userProfiles),
+        image: users.image,
+      })
+      .from(userProfiles)
+      .leftJoin(users, eq(userProfiles.userId, users.id))
+      .execute(),
+  );
 
-  return result;
+  if (result.error) {
+    return { data: null, error: result.error };
+  }
+  return { data: result.data, error: null };
 }

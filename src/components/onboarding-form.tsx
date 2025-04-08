@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -16,34 +16,42 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { useCreateEntity } from "~/hooks/useCreateEntity";
 import { insertUser } from "~/lib/user-service";
-import { userProfileSchema } from "~/server/db/schemas/user-profiles";
+import {
+  UserProfileInsertSchema,
+  type UserProfileInputType,
+} from "~/server/db/types/user-types";
 
 export function OnboardingForm() {
   const { data } = useSession();
   const router = useRouter();
-  const formSchema = userProfileSchema;
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const mutation = useCreateEntity<UserProfileInputType>({
+    mutationAction: insertUser,
+    invalidateKey: ["users"],
+    onSuccessAction: () => {
+      form.reset();
+      setFormError(null);
+      router.push("/profile");
+    },
+    onErrorAction: (message) => {
+      setFormError(message);
+    },
+  });
+
+  const form = useForm<UserProfileInputType>({
+    resolver: zodResolver(UserProfileInsertSchema),
     defaultValues: {
       userId: data?.user.id,
       userName: "",
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Submitted values:", values);
-    if (!!data) {
-      const insertData = { ...values, userId: data.user.id };
-      try {
-        await insertUser(insertData);
-        router.push("/profile");
-      } catch (error) {
-        console.error("Error at inserting UserProfile:", error);
-      }
-    }
+  async function onSubmit(data: UserProfileInputType) {
+    setFormError(null);
+    mutation.mutate(data);
   }
 
   return (
@@ -65,6 +73,7 @@ export function OnboardingForm() {
             </FormItem>
           )}
         />
+        {formError && <p className="font-semibold text-red-700">{formError}</p>}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

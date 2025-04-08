@@ -24,7 +24,7 @@ export const events = pgTable("events", {
   description: text("description"),
   categoryId: integer("category_id")
     .references(() => eventCategories.id)
-    .notNull(),
+    .default(1),
   minGamePoints: integer("min_game_points"),
   beginner: boolean("beginner").default(true),
   minPlayers: integer("min_players"),
@@ -39,7 +39,7 @@ export const events = pgTable("events", {
   }).notNull(),
   permissionsId: integer("permissions_id")
     .references(() => permissions.id)
-    .notNull(),
+    .default(1),
   minUserPoints: integer("min_user_points"),
   verified: boolean("verified").default(false),
   guests: boolean("guests").default(true),

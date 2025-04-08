@@ -23,8 +23,8 @@ interface UserPageProps {
 export default async function UserPage({ params, children }: UserPageProps) {
   const { userName } = await params;
 
-  const userProfile = await getUserByName(userName);
-  if (!userProfile) {
+  const result = await getUserByName(userName);
+  if (result.error) {
     return notFound();
   }
 
@@ -37,7 +37,7 @@ export default async function UserPage({ params, children }: UserPageProps) {
   ];
 
   return (
-    <UserProfileProvider initialProfile={userProfile}>
+    <UserProfileProvider initialProfile={result.data}>
       <Profile />
       <ProfileTabs tabs={tabs} />
       {children}

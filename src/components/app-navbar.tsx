@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { signOut } from "next-auth/react";
 import { Typography } from "~/components/typography";
 import { usePathname } from "next/navigation";
 import {

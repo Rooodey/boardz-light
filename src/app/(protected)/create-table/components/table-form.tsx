@@ -1,11 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -25,32 +24,41 @@ import {
   SelectContent,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
+import { useCreateEntity } from "~/hooks/useCreateEntity";
+import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
 import { getVenuesByUserId, insertTable } from "~/lib/table-services";
 import {
-  tableSchema,
-  type TableType,
-} from "~/server/db/schemas/tables-schemas";
+  TableInsertSchema,
+  VenueInputType,
+  VenueSelectType,
+  type TableInputType,
+} from "~/server/db/types/table-types";
 
 export function TableForm() {
   const { data: session } = useSession();
-  const { data } = useQuery({
-    queryKey: ["venues", session?.user.id],
-    queryFn: () => getVenuesByUserId(session?.user.id ?? ""),
+  const router = useRouter();
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const { data: venues = [], isError } = useUserResourceQuery<VenueSelectType>({
+    key: "venues",
+    fetcherAction: getVenuesByUserId,
   });
-  const mutation = useMutation({
-    mutationFn: async (values: TableType) => {
-      await insertTable(values);
-    },
-    onSuccess: () => {
+
+  const mutation = useCreateEntity<TableInputType>({
+    mutationAction: insertTable,
+    invalidateKey: ["tables"],
+    onSuccessAction: () => {
+      form.reset();
+      setFormError(null);
       router.push("/profile/tables");
     },
-    onError: (error) => {
-      console.error("Error inserting table:", error);
+    onErrorAction: (message) => {
+      setFormError(message);
     },
   });
-  const router = useRouter();
-  const form = useForm<z.infer<typeof tableSchema>>({
-    resolver: zodResolver(tableSchema),
+
+  const form = useForm<TableInputType>({
+    resolver: zodResolver(TableInsertSchema),
     defaultValues: {
       userId: session?.user.id,
       venueId: "",
@@ -60,7 +68,8 @@ export function TableForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof tableSchema>) {
+  async function onSubmit(values: TableInputType) {
+    setFormError(null);
     mutation.mutate(values);
   }
 
@@ -78,7 +87,7 @@ export function TableForm() {
                   <SelectTrigger>
                     <SelectValue
                       placeholder={
-                        data?.length === 0
+                        venues?.length === 0
                           ? "You have no venue yet..."
                           : "Choose your venue"
                       }
@@ -86,7 +95,7 @@ export function TableForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {data?.map((venue) => (
+                  {venues?.map((venue) => (
                     <SelectItem key={venue.id} value={venue.id}>
                       {venue.name}
                     </SelectItem>
@@ -160,7 +169,7 @@ export function TableForm() {
             </FormItem>
           )}
         />
-
+        {formError && <p className="font-semibold text-red-700">{formError}</p>}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

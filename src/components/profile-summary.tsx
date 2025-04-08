@@ -8,25 +8,23 @@ import { useUserProfile } from "~/contexts/UserProfileContext";
 import { getFriends } from "~/lib/user-service";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
 
 export default function ProfileSummary() {
   const { data: session } = useSession();
   const { profile } = useUserProfile();
   const [friendCount, setFriendCount] = useState<number>(0);
+  console.log(profile);
+
+  const { data: friends = [], isError } = useUserResourceQuery<any>({
+    key: "friends",
+    fetcherAction: getFriends,
+    userId: profile.userId,
+  });
 
   useEffect(() => {
-    async function fetchFriends() {
-      if (profile?.userId) {
-        try {
-          const friends = await getFriends(profile.userId);
-          setFriendCount(friends?.length ?? 0);
-        } catch (error) {
-          console.error("Error fetching friends:", error);
-        }
-      }
-    }
-    void fetchFriends();
-  }, [profile?.userId]);
+    setFriendCount(friends.length ?? 0);
+  }, [friends]);
 
   return (
     <>

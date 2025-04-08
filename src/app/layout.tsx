@@ -76,9 +76,9 @@ async function LoggedInLayout({
   if (!session?.user?.id) {
     redirect("/login");
   }
-  const userProfile = await getUserById(session.user.id);
+  const result = await getUserById(session.user.id);
 
-  if (!userProfile) {
+  if (result.error || !result.data) {
     return (
       <>
         <TopNav />
@@ -94,7 +94,7 @@ async function LoggedInLayout({
     );
   }
   return (
-    <UserProfileProvider initialProfile={userProfile}>
+    <UserProfileProvider initialProfile={result.data}>
       <AppNavbar />
       <main className="mb-14 flex flex-grow md:mb-0 md:ml-64">
         <div className="relative mx-auto flex w-full flex-grow flex-col gap-4 bg-white p-4 shadow-sm md:max-w-2xl md:p-6">

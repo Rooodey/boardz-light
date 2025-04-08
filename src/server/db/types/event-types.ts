@@ -2,31 +2,33 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { events } from "../schemas/events-schemas";
 
-export const eventSchema = createInsertSchema(events, {
-  id: z.string().uuid().optional(), // UUID, wird oft automatisch generiert
-  userId: z.string().uuid(), // User-ID als UUID
-  venueId: z.string().uuid(), // Venue-ID als UUID
-  title: z.string().min(3).max(100), // Titel zwischen 3 und 100 Zeichen
-  description: z.string().max(500).optional(), // Optional, max. 500 Zeichen
-  categoryId: z.number().positive().int().default(1), // Kategorie-ID als positive Ganzzahl
-  minGamePoints: z.number().min(0).int().optional(), // Optional, min. 0
-  beginner: z.boolean().default(true), // Standardmäßig Anfängerfreundlich
-  minPlayers: z.number().min(1).max(100).optional(), // Mind. 1, max. 100 Spieler
-  maxPlayers: z.number().min(1).max(100).optional(), // Mind. 1, max. 100 Spieler
-  startTime: z.string().datetime({ offset: true }), // RFC 3339 Datetime mit Zeitzone
-  endTime: z.string().datetime({ offset: true }), // RFC 3339 Datetime mit Zeitzone
-  permissionsId: z.number().positive().int().default(1), // Berechtigungs-ID
-  minUserPoints: z.number().min(0).int().optional(), // Optional
-  verified: z.boolean().default(false), // Standardmäßig nicht verifiziert
-  guests: z.boolean().default(true), // Gäste erlaubt?
-  smoker: z.boolean().default(false), // Raucher-Option
-  barrier_free: z.boolean().default(false), // Barrierefreiheit
-  only_women: z.boolean().default(false), // Frauen-only?
-  only_men: z.boolean().default(false), // Männer-only?
-  diverse: z.boolean().default(true), // Diverse erlaubt?
-  outside: z.boolean().default(false), // Draußen?
-  createdAt: z.date().optional(), // Optional, wird in der DB automatisch gesetzt
+export const EventInsertSchema = createInsertSchema(events, {
+  id: z.string().uuid().optional(),
+  userId: z.string().uuid(),
+  venueId: z.string().uuid(),
+  title: z.string().min(3).max(24),
+  description: z.string().max(300).optional(),
+  categoryId: z.number().positive().int().default(1),
+  minGamePoints: z.number().min(0).int().default(0),
+  beginner: z.boolean().default(true),
+  minPlayers: z.number().min(1).max(100).optional(),
+  maxPlayers: z.number().min(1).max(100).optional(),
+  startTime: z.string().datetime({ offset: true }),
+  endTime: z.string().datetime({ offset: true }),
+  permissionsId: z.number().positive().int().default(1),
+  minUserPoints: z.number().min(0).int().optional(),
+  verified: z.boolean().default(false),
+  guests: z.boolean().default(true),
+  smoker: z.boolean().default(false),
+  barrier_free: z.boolean().default(false),
+  only_women: z.boolean().default(false),
+  only_men: z.boolean().default(false),
+  diverse: z.boolean().default(true),
+  outside: z.boolean().default(false),
+  createdAt: z.date().optional(),
+}).omit({
+  createdAt: true,
 });
 
-// 🎯 TypeScript-Typ aus Zod-Schema ableiten
-export type EventInput = z.input<typeof eventSchema>;
+export type EventInsertType = z.infer<typeof EventInsertSchema>;
+export type EventInputType = z.input<typeof EventInsertSchema>;

@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -23,19 +23,34 @@ import {
   SelectValue,
   SelectContent,
 } from "~/components/ui/select";
+import { useCreateEntity } from "~/hooks/useCreateEntity";
 import { insertVenue } from "~/lib/table-services";
 import {
   allowedCountries,
-  venueSchema,
-} from "~/server/db/schemas/tables-schemas";
+  VenueInputType,
+  VenueFormSchema,
+} from "~/server/db/types/table-types";
 
 export function VenueForm() {
   const { data, status } = useSession();
   const router = useRouter();
-  const formSchema = venueSchema;
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const mutation = useCreateEntity<VenueInputType>({
+    mutationAction: insertVenue,
+    invalidateKey: ["venues"],
+    onSuccessAction: () => {
+      form.reset();
+      setFormError(null);
+      router.push("/profile/tables");
+    },
+    onErrorAction: (message) => {
+      setFormError(message);
+    },
+  });
+
+  const form = useForm<VenueInputType>({
+    resolver: zodResolver(VenueFormSchema),
     defaultValues: {
       userId: data?.user.id,
       name: "",
@@ -48,14 +63,9 @@ export function VenueForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await insertVenue(values);
-      router.push("/create-table");
-    } catch (error) {
-      console.error("Error at inserting UserProfile:", error);
-    }
+  async function onSubmit(data: VenueInputType) {
+    setFormError(null);
+    mutation.mutate(data);
   }
 
   return (
@@ -176,7 +186,7 @@ export function VenueForm() {
             </FormItem>
           )}
         />
-
+        {formError && <p className="font-semibold text-red-700">{formError}</p>}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

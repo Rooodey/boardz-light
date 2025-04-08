@@ -1,6 +1,5 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
@@ -8,20 +7,26 @@ import TableCard from "~/components/table-card";
 import { Typography } from "~/components/typography";
 import { Button } from "~/components/ui/button";
 import { useUserProfile } from "~/contexts/UserProfileContext";
+import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
 import { getTablesByUserId } from "~/lib/table-services";
+import type {
+  TableInputType,
+  TableSelectType,
+} from "~/server/db/types/table-types";
 
 export default function TableList() {
   const { data: session } = useSession();
   const { profile } = useUserProfile();
   const router = useRouter();
-  const { data } = useQuery({
-    queryKey: ["tables", session?.user.id],
-    queryFn: () => getTablesByUserId(session?.user.id ?? ""),
+  const { data } = useUserResourceQuery<TableSelectType>({
+    key: "tables",
+    fetcherAction: getTablesByUserId,
+    userId: profile.userId,
   });
-  console.log("🚀 Tables:", data);
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      {!data && <Typography>No Tables yet...</Typography>}
+      {data?.length === 0 && <Typography>No Tables yet...</Typography>}
       {session?.user.id === profile?.userId && (
         <Button
           variant={"accent"}

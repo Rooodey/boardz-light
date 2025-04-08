@@ -3,9 +3,9 @@ import Image from "next/image";
 import { Typography } from "~/components/typography";
 
 interface TableCardProps {
-  image: string | null;
+  image?: string | null;
   name: string;
-  description: string | null;
+  description?: string | null;
   isLast?: boolean;
 }
 

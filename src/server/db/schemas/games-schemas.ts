@@ -7,8 +7,6 @@ import {
   primaryKey,
   serial,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
 
 export const games = pgTable("games", {
   id: serial("id").primaryKey(),
@@ -16,11 +14,6 @@ export const games = pgTable("games", {
   strategies: jsonb("strategy").notNull().default([]),
   image: text("image"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-});
-
-export const gameSchema = createInsertSchema(games, {
-  strategies: z.array(z.any()),
-  image: z.string().url().optional(),
 });
 
 export const gameCategories = pgTable("game_categories", {

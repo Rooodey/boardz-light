@@ -1,11 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import type { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -24,34 +22,44 @@ import {
   SelectValue,
   SelectContent,
 } from "~/components/ui/select";
-import { insertEvent } from "~/lib/event-service";
-import { getVenuesByUserId } from "~/lib/table-services";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { type EventInput, eventSchema } from "~/server/db/types/event-types";
+import {
+  type EventInputType,
+  EventInsertSchema,
+} from "~/server/db/types/event-types";
+import { useState } from "react";
+import { useCreateEntity } from "~/hooks/useCreateEntity";
+import { insertEvent } from "~/lib/event-service";
+import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
+import { getVenuesByUserId } from "~/lib/table-services";
+import { VenueSelectType } from "~/server/db/types/table-types";
 
 export function EventForm() {
   const { data: session } = useSession();
-  const { data } = useQuery({
-    queryKey: ["venues", session?.user.id],
-    queryFn: () => getVenuesByUserId(session?.user.id ?? ""),
+  const router = useRouter();
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const { data: venues = [], isError } = useUserResourceQuery<VenueSelectType>({
+    key: "venues",
+    fetcherAction: getVenuesByUserId,
   });
-  const mutation = useMutation({
-    mutationFn: async (values: EventInput) => {
-      await insertEvent(values);
+
+  const mutation = useCreateEntity<EventInputType>({
+    mutationAction: insertEvent,
+    invalidateKey: ["events"],
+    onSuccessAction: () => {
+      form.reset();
+      setFormError(null);
+      router.push("/events");
     },
-    onSuccess: () => {
-      router.back();
-    },
-    onError: (error) => {
-      console.error("Error inserting table:", error);
+    onErrorAction: (message) => {
+      setFormError(message);
     },
   });
 
-  const router = useRouter();
-  // 1. Define your form.
-  const form = useForm<EventInput>({
-    resolver: zodResolver(eventSchema),
+  const form = useForm<EventInputType>({
+    resolver: zodResolver(EventInsertSchema),
     defaultValues: {
       userId: session?.user.id ?? "",
       venueId: "",
@@ -61,24 +69,19 @@ export function EventForm() {
     },
   });
 
-  function onSubmit(values: EventInput) {
-    console.log("Form values:", values);
-    const result = eventSchema.safeParse(values);
-    if (!result.success) {
-      console.error("Validation failed:", result.error.format());
-      return;
-    }
-    mutation.mutate(values);
+  function onSubmit(data: EventInputType) {
+    setFormError(null);
+    mutation.mutate(data);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        {Object.keys(form.formState.errors).length > 0 && (
+        {/* {Object.keys(form.formState.errors).length > 0 && (
           <pre className="bg-red-100 p-2 text-red-700">
             {JSON.stringify(form.formState.errors, null, 2)}
           </pre>
-        )}
+        )} */}
         <FormField
           control={form.control}
           name="venueId"
@@ -92,7 +95,7 @@ export function EventForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {data?.map((venue) => (
+                  {venues?.map((venue) => (
                     <SelectItem key={venue.id} value={venue.id}>
                       {venue.name}
                     </SelectItem>
@@ -100,7 +103,9 @@ export function EventForm() {
                 </SelectContent>
               </Select>
               <FormDescription>
-                The location where your table is located.
+                {isError
+                  ? "Venues are not available at the moment. Please try again later."
+                  : "The location where your table is located."}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -177,7 +182,7 @@ export function EventForm() {
             </FormItem>
           )}
         />
-
+        {formError && <p className="font-semibold text-red-700">{formError}</p>}
         <Button type="submit">Submit</Button>
       </form>
     </Form>
