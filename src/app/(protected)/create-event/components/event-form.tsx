@@ -33,7 +33,7 @@ import { useCreateEntity } from "~/hooks/useCreateEntity";
 import { insertEvent } from "~/lib/event-service";
 import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
 import { getVenuesByUserId } from "~/lib/table-services";
-import { VenueSelectType } from "~/server/db/types/table-types";
+import type { VenueSelectType } from "~/server/db/types/table-types";
 
 export function EventForm() {
   const { data: session } = useSession();
@@ -158,7 +158,7 @@ export function EventForm() {
         <FormField
           control={form.control}
           name="endTime"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>End Time</FormLabel>
               <FormControl>

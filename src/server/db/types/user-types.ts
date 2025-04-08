@@ -21,9 +21,6 @@ export const UserProfileInsertSchema = createInsertSchema(userProfiles, {
 });
 
 export type UserProfileInputType = z.input<typeof UserProfileInsertSchema>;
-export type ExtendedUserProfile = UserProfileInputType & {
-  image?: string | null;
-};
 
 export const UserProfileSelectSchema = createSelectSchema(userProfiles);
 export type ExtendedUserProfileSelectType = z.infer<

@@ -8,7 +8,7 @@ import AppNavbar from "~/components/app-navbar";
 import TopNav from "~/components/topnav";
 import { getUserById } from "~/lib/user-service";
 import { type DefaultSession } from "next-auth";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import UserProfileProvider from "~/contexts/UserProfileProvider";
 import { ReactQueryProvider } from "~/lib/react-query-provider";
 import { Typography } from "~/components/typography";

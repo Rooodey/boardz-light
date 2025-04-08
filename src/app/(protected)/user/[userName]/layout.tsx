@@ -24,7 +24,7 @@ export default async function UserPage({ params, children }: UserPageProps) {
   const { userName } = await params;
 
   const result = await getUserByName(userName);
-  if (result.error) {
+  if (result.error || !result.data) {
     return notFound();
   }
 

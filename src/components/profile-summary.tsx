@@ -16,10 +16,13 @@ export default function ProfileSummary() {
   const [friendCount, setFriendCount] = useState<number>(0);
   console.log(profile);
 
-  const { data: friends = [], isError } = useUserResourceQuery<any>({
+  const { data: friends = [] } = useUserResourceQuery<any>({
     key: "friends",
     fetcherAction: getFriends,
-    userId: profile.userId,
+    userId: profile?.userId,
+    options: {
+      enabled: !!profile?.userId,
+    },
   });
 
   useEffect(() => {

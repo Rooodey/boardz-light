@@ -27,12 +27,12 @@ import { useCreateEntity } from "~/hooks/useCreateEntity";
 import { insertVenue } from "~/lib/table-services";
 import {
   allowedCountries,
-  VenueInputType,
+  type VenueInputType,
   VenueFormSchema,
 } from "~/server/db/types/table-types";
 
 export function VenueForm() {
-  const { data, status } = useSession();
+  const { data } = useSession();
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
 

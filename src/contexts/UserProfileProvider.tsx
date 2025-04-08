@@ -2,16 +2,17 @@
 
 import { type ReactNode, useState } from "react";
 import { UserProfileContext } from "./UserProfileContext";
-import type { ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
+import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 export default function UserProfileProvider({
   children,
   initialProfile,
 }: {
   children: ReactNode;
-  initialProfile: ExtendedUserProfile;
+  initialProfile: ExtendedUserProfileSelectType;
 }) {
-  const [profile, setProfile] = useState<ExtendedUserProfile>(initialProfile);
+  const [profile, setProfile] =
+    useState<ExtendedUserProfileSelectType>(initialProfile);
   return (
     <UserProfileContext.Provider value={{ profile, setProfile }}>
       {children}

@@ -29,8 +29,7 @@ import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
 import { getVenuesByUserId, insertTable } from "~/lib/table-services";
 import {
   TableInsertSchema,
-  VenueInputType,
-  VenueSelectType,
+  type VenueSelectType,
   type TableInputType,
 } from "~/server/db/types/table-types";
 
@@ -39,7 +38,7 @@ export function TableForm() {
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
 
-  const { data: venues = [], isError } = useUserResourceQuery<VenueSelectType>({
+  const { data: venues = [] } = useUserResourceQuery<VenueSelectType>({
     key: "venues",
     fetcherAction: getVenuesByUserId,
   });

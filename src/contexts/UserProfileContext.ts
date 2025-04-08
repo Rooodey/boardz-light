@@ -1,11 +1,13 @@
 "use client";
 
-import type { ExtendedUserProfile } from "./../server/db/schemas/user-profiles";
 import { createContext, useContext } from "react";
+import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 interface UserProfileContextProps {
-  profile: ExtendedUserProfile | null;
-  setProfile: React.Dispatch<React.SetStateAction<ExtendedUserProfile>>;
+  profile: ExtendedUserProfileSelectType | null;
+  setProfile: React.Dispatch<
+    React.SetStateAction<ExtendedUserProfileSelectType>
+  >;
 }
 
 export const UserProfileContext = createContext<
