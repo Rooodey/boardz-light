@@ -1,7 +1,7 @@
 "use server";
 
 import { eq, or, getTableColumns } from "drizzle-orm";
-import { FriendProfile } from "./../server/db/types/friends-types";
+import { type FriendProfile } from "./../server/db/types/friends-types";
 
 import {
   type ActionResult,

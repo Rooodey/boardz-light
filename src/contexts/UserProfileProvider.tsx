@@ -2,7 +2,7 @@
 
 import { type ReactNode, useState } from "react";
 import { UserProfileContext } from "./UserProfileContext";
-import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
+import { type ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 export default function UserProfileProvider({
   children,

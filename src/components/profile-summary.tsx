@@ -9,7 +9,7 @@ import { getFriends } from "~/lib/user-service";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
-import { FriendProfile } from "~/server/db/types/friends-types";
+import { type FriendProfile } from "~/server/db/types/friends-types";
 
 export default function ProfileSummary() {
   const { data: session } = useSession();

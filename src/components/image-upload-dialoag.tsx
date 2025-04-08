@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react";
 import AvatarCropper from "~/components/avatar-cropper";
 import { uploadAvatar } from "~/lib/file-upload";
 import { useUserProfile } from "~/contexts/UserProfileContext";
-import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
+import { type ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 export function ImageUploadDialog() {
   const [open, setOpen] = useState(false);
