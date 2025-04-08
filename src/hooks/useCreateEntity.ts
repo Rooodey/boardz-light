@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ActionResult } from "~/lib/error";
+import { type ActionResult } from "~/lib/error";
 
 type UseCreateEntityOptions<TInput> = {
   mutationAction: (input: TInput) => Promise<ActionResult<null>>;
@@ -24,7 +24,7 @@ export function useCreateEntity<TInput>({
 
       if (result.error) {
         const msg =
-          result.error.message ||
+          result.error.message ??
           "An unknown error occurred. Please try again later.";
         onErrorAction?.(msg);
         return;

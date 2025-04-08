@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
+import { type ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 interface UserProfileContextProps {
   profile: ExtendedUserProfileSelectType | null;

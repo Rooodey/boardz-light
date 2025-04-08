@@ -1,4 +1,3 @@
-import { Heart, Pin, Star, Trophy, UsersRound } from "lucide-react";
 import Image from "next/image";
 import { Typography } from "~/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";

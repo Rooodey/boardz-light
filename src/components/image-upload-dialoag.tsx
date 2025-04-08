@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react";
 import AvatarCropper from "~/components/avatar-cropper";
 import { uploadAvatar } from "~/lib/file-upload";
 import { useUserProfile } from "~/contexts/UserProfileContext";
-import { type ExtendedUserProfile } from "~/server/db/schemas/user-profiles";
+import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 export function ImageUploadDialog() {
   const [open, setOpen] = useState(false);
@@ -52,7 +52,7 @@ export function ImageUploadDialog() {
           session.user.id,
           session.user.name,
         );
-        setProfile((prev: ExtendedUserProfile) => ({
+        setProfile((prev: ExtendedUserProfileSelectType) => ({
           ...prev,
           image: newImageUrl,
         }));

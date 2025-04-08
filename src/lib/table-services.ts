@@ -9,11 +9,11 @@ import {
   type VenueInputType,
   VenueInsertSchema,
   TableInsertSchema,
-  VenueSelectType,
-  TableSelectType,
+  type VenueSelectType,
+  type TableSelectType,
 } from "./../server/db/types/table-types";
 import {
-  ActionResult,
+  type ActionResult,
   fetchingError,
   tryCatch,
   validationError,

@@ -72,3 +72,5 @@ export type VenueInsertType = z.infer<typeof VenueInsertSchema>;
 
 export const VenueSelectSchema = createSelectSchema(venues);
 export type VenueSelectType = z.infer<typeof VenueSelectSchema>;
+
+export type ExpandedVenueSelectType = VenueSelectType & { distance: number };

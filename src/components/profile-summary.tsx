@@ -9,6 +9,7 @@ import { getFriends } from "~/lib/user-service";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
+import { FriendProfile } from "~/server/db/types/friends-types";
 
 export default function ProfileSummary() {
   const { data: session } = useSession();
@@ -16,7 +17,7 @@ export default function ProfileSummary() {
   const [friendCount, setFriendCount] = useState<number>(0);
   console.log(profile);
 
-  const { data: friends = [] } = useUserResourceQuery<any>({
+  const { data: friends = [] } = useUserResourceQuery<FriendProfile>({
     key: "friends",
     fetcherAction: getFriends,
     userId: profile?.userId,

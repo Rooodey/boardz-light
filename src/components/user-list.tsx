@@ -1,14 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { Typography } from "~/components/typography";
 import UserRow from "~/components/user-row";
 import { useUserResourceQuery } from "~/hooks/useUserResourceQuery";
 import { getUsers } from "~/lib/user-service";
-import { ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
+import { type ExtendedUserProfileSelectType } from "~/server/db/types/user-types";
 
 export default function UserList() {
-  const { data: users = [], isError } =
+  const { data: users = [] } =
     useUserResourceQuery<ExtendedUserProfileSelectType>({
       key: "users",
       fetcherAction: getUsers,

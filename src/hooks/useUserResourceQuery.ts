@@ -2,7 +2,7 @@
 
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { ActionResult } from "~/lib/error";
+import { type ActionResult } from "~/lib/error";
 
 type UseUserResourceQueryParams<T> = {
   key: string;

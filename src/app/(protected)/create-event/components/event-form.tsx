@@ -129,7 +129,7 @@ export function EventForm() {
         <FormField
           control={form.control}
           name="startTime"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Start Time</FormLabel>
               <FormControl>

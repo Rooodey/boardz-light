@@ -11,15 +11,12 @@ import {
   type AutocompleteResponse,
   getCoordinatesFromPlaceId,
 } from "~/lib/geo-services";
-import type { Venue } from "~/server/db/schemas/tables-schemas";
 
 interface LocationType {
   description: string;
   lat: number;
   lng: number;
 }
-
-export type ExpandedVenue = Venue & { distance: number };
 
 export function SearchLocation() {
   const [isFocused, setIsFocused] = useState(false);

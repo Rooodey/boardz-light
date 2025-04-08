@@ -1,6 +1,6 @@
 "use server";
 
-import { ActionResult, tryCatch, validationError } from "~/lib/error";
+import { type ActionResult, tryCatch, validationError } from "~/lib/error";
 import { db } from "~/server/db";
 import { events } from "~/server/db/schemas/events-schemas";
 import {

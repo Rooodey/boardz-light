@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
   const sessionToken =
@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
     req.cookies.get("__Secure-authjs.session-token")?.value;
 
   if (!sessionToken) {
-    console.log("❌ No session token found, redirecting...");
+    console.log("No session token found, redirecting...");
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

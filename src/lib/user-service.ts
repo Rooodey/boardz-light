@@ -1,12 +1,10 @@
 "use server";
 
-import { error } from "console";
 import { eq, or, getTableColumns } from "drizzle-orm";
+import { FriendProfile } from "./../server/db/types/friends-types";
 
 import {
-  ActionResult,
-  extractPostgresError,
-  isPostgresError,
+  type ActionResult,
   notFoundError,
   tryCatch,
   validationError,
@@ -16,8 +14,8 @@ import { users } from "~/server/db/schemas/auth-schemas";
 import { friends } from "~/server/db/schemas/friends-schemas";
 import { userProfiles } from "~/server/db/schemas/user-profiles";
 import {
-  ExtendedUserProfileSelectType,
-  UserProfileInputType,
+  type ExtendedUserProfileSelectType,
+  type UserProfileInputType,
   UserProfileInsertSchema,
 } from "~/server/db/types/user-types";
 
@@ -84,7 +82,9 @@ export async function getUserByName(
   return { data: result.data[0], error: null };
 }
 
-export async function getFriends(userId: string): Promise<ActionResult<any>> {
+export async function getFriends(
+  userId: string,
+): Promise<ActionResult<FriendProfile[]>> {
   const result = await tryCatch(
     db
       .select({
